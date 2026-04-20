@@ -292,52 +292,88 @@
   var qrBottom = oy + n;
   var qrCenterX = ox + n / 2;
 
-  // ---- Horns: giant longhorn crescents attached to the forehead ----
-  // The base attaches just ABOVE the top edge of the QR (in the
-  // quiet zone), and sweeps outward past the LEFT_PAD / RIGHT_PAD.
+  // ---- Horns: Spanish-fighting-bull style — thick base, short
+  // length, mostly vertical with an inward curl at the tip. Dark
+  // soot/bone colour for weight. Attach at the forehead corners. ----
   function bigHorn(dir) {
     // dir = -1 (left) or +1 (right)
-    // Base attaches above the top-left or top-right finder centres.
     var baseCx = (dir < 0)
-      ? qrLeft + 5.5     // above TL eye area
-      : qrRight - 5.5;   // above TR eye area
-    var baseY  = qrTop - 0.4;        // right on the edge of the quiet zone
-    var baseW  = 3.4;                // base width (modules)
-    var tipX   = baseCx + dir * 10.5;
-    var tipY   = qrTop - TOP_PAD + 3;  // near the top of the canvas
-    var ctrlOutX = baseCx + dir * 3.0;
-    var ctrlOutY = qrTop - TOP_PAD * 0.25;
-    var ctrlOut2X = baseCx + dir * 9.5;
-    var ctrlOut2Y = tipY + 0.5;
-    var ctrlInX  = baseCx + dir * 7.5;
-    var ctrlInY  = qrTop - TOP_PAD * 0.45;
-    var ctrlIn2X = baseCx + dir * 2.2;
-    var ctrlIn2Y = qrTop - 1.2;
+      ? qrLeft + 4.5          // closer to the forehead centre than before
+      : qrRight - 4.5;
+    var baseY  = qrTop - 1.2;                 // pulled up so the thick
+                                              // base + stroke can't bleed
+                                              // into the QR top row
+    var baseW  = 5.6;                         // THICK base (was 3.4)
+
+    // Tip: high and slightly INWARD (not a wide longhorn sweep)
+    var tipLen  = 6.5;                        // shorter (was 10.5)
+    var tipRise = TOP_PAD - 3.5;              // reaches near top of canvas
+    var tipX    = baseCx + dir * tipLen;
+    var tipY    = baseY - tipRise;
+    var pointX  = tipX - dir * 1.8;           // the actual horn point — curls BACK inward
+    var pointY  = tipY - 1.0;
+
+    var outerBaseX = baseCx + dir * baseW / 2;
+    var innerBaseX = baseCx - dir * baseW / 2;
+
+    // Outer edge: bulge outward low, converge up toward the shoulder of the tip
+    var outerC1x = baseCx + dir * (baseW * 0.95);
+    var outerC1y = baseY - tipRise * 0.25;
+    var outerC2x = baseCx + dir * (tipLen + 1.3);
+    var outerC2y = tipY + 1.2;
+
+    // Inner edge: curl back from the point toward the skull — creates
+    // the muscular, slightly concave inner profile of a fighting bull horn.
+    var innerC1x = baseCx + dir * (tipLen - 2.0);
+    var innerC1y = tipY + tipRise * 0.35;
+    var innerC2x = baseCx + dir * (baseW * 0.15);
+    var innerC2y = baseY - 1.2;
 
     var d =
-      'M ' + (baseCx + dir * baseW / 2) + ' ' + baseY +
-      ' C ' + ctrlOutX + ' ' + ctrlOutY +
-      ', ' + ctrlOut2X + ' ' + ctrlOut2Y +
+      'M ' + outerBaseX + ' ' + baseY +
+      ' C ' + outerC1x + ' ' + outerC1y +
+      ', ' + outerC2x + ' ' + outerC2y +
       ', ' + tipX + ' ' + tipY +
-      ' C ' + ctrlInX + ' ' + ctrlInY +
-      ', ' + ctrlIn2X + ' ' + ctrlIn2Y +
-      ', ' + (baseCx - dir * baseW / 2) + ' ' + baseY +
+      ' L ' + pointX + ' ' + pointY +
+      ' C ' + innerC1x + ' ' + innerC1y +
+      ', ' + innerC2x + ' ' + innerC2y +
+      ', ' + innerBaseX + ' ' + baseY +
       ' Z';
 
     var g = el('g', { class: 'horn' });
-    // Horn body — cream hide colour with dark outline (heraldic)
+    // Horn body — dark soot (masculine bone/keratin, not cream)
     g.appendChild(el('path', {
-      d: d, fill: '#F2EDE4', stroke: '#2C2421', 'stroke-width': 0.55, 'stroke-linejoin': 'round'
+      d: d, fill: '#2C2421', stroke: '#0F0A08',
+      'stroke-width': 0.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round'
     }));
-    // Inner shadow line for volume
+    // Bone highlight along the outer edge (light from above-outer)
     g.appendChild(el('path', {
-      d: 'M ' + (baseCx - dir * baseW * 0.15) + ' ' + (baseY - 0.5) +
-         ' Q ' + ctrlInX + ' ' + ctrlInY +
-         ' ' + (tipX - dir * 0.4) + ' ' + (tipY + 0.3),
-      fill: 'none', stroke: '#7A1F1F', 'stroke-width': 0.35, 'stroke-linecap': 'round', opacity: 0.7
+      d: 'M ' + (outerBaseX + dir * 0.25) + ' ' + (baseY - 0.15) +
+         ' C ' + outerC1x + ' ' + (outerC1y - 0.2) +
+         ', ' + outerC2x + ' ' + (outerC2y - 0.1) +
+         ', ' + (tipX - dir * 0.3) + ' ' + (tipY + 0.2),
+      fill: 'none', stroke: '#D8CBB8', 'stroke-width': 0.55,
+      'stroke-linecap': 'round', opacity: 0.85
     }));
-    // Gold tip accent
-    g.appendChild(el('circle', { cx: tipX, cy: tipY, r: 0.55, fill: '#D4A843' }));
+    // Darker inner groove (gives the horn a solid, heavy look)
+    g.appendChild(el('path', {
+      d: 'M ' + (innerBaseX + dir * 0.5) + ' ' + (baseY - 0.8) +
+         ' C ' + (innerC2x + dir * 0.3) + ' ' + (innerC2y - 0.1) +
+         ', ' + innerC1x + ' ' + innerC1y +
+         ', ' + (pointX + dir * 0.4) + ' ' + (pointY + 0.3),
+      fill: 'none', stroke: '#7A1F1F', 'stroke-width': 0.3,
+      'stroke-linecap': 'round', opacity: 0.55
+    }));
+    // Base keratin ring — dark band where horn meets skull
+    // (offset UP so the ellipse sits entirely above the QR top)
+    g.appendChild(el('ellipse', {
+      cx: baseCx, cy: baseY - 0.4, rx: baseW * 0.52, ry: 0.6,
+      fill: '#0F0A08'
+    }));
+    // Gold-red tip (battle-worn glint, matches brand accent)
+    g.appendChild(el('circle', {
+      cx: pointX - dir * 0.15, cy: pointY + 0.2, r: 0.55, fill: '#D4A843'
+    }));
     return g;
   }
   svg.appendChild(bigHorn(-1));
