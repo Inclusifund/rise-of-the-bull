@@ -188,7 +188,7 @@
       <title>Rise of the Bull QR code shaped as a bull</title>
     </svg>
     <div class="scan-caption">Scan the <span>Bull</span>
-      <br /><span class="scan-fallback">or tap <a href="https://inclusifund.co.uk/bull" id="fallback">inclusifund.co.uk/bull</a></span>
+      <br /><span class="scan-fallback">or tap <a href="https://inclusifund.github.io/rise-of-the-bull/" id="fallback">inclusifund.github.io/rise-of-the-bull</a></span>
     </div>
   </div>
 
@@ -200,7 +200,7 @@
 
   <div class="cta-block">
     <p class="lead">Market stalls. Love locks. The Bull Signal through the roof. <br />Drop your postcode — be part of what comes next.</p>
-    <a class="btn" href="https://inclusifund.co.uk/bull"><span class="spark">&#9679;</span> Stand with the Bull</a>
+    <a class="btn" href="https://inclusifund.github.io/rise-of-the-bull/"><span class="spark">&#9679;</span> Stand with the Bull</a>
   </div>
 
   <div class="story">
@@ -232,7 +232,10 @@
   // correction level H (~30%) absorbs it.
   // ============================================================
 
-  var URL = 'https://inclusifund.co.uk/bull';
+  // TEST DEPLOY: QR points to the live GitHub Pages build so Justin's
+  // scan test proves end-to-end scan → page. Swap to
+  // 'https://inclusifund.co.uk/bull' once that path is set up on Cloudflare.
+  var URL = 'https://inclusifund.github.io/rise-of-the-bull/';
   var svg = document.getElementById('bullqr');
 
   // Generate QR matrix at error-correction level H (max resilience
