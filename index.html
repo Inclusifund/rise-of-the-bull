@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Rise of the Bull — Mexborough High Street</title>
+<meta name="description" content="The Bulls Head stands. Scan the Bull. Stand with Mexborough High Street. 23 April." />
+<meta property="og:title" content="Rise of the Bull — Mexborough High Street" />
+<meta property="og:description" content="200 years old. Burned by arson. Left for dead. But this pub's not done yet." />
+<meta property="og:type" content="website" />
+<meta name="theme-color" content="#A83232" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --red: #A83232;
+    --red-deep: #7A1F1F;
+    --gold: #D4A843;
+    --green: #4A7C59;
+    --limestone: #F2EDE4;
+    --soot: #2C2421;
+    --font-display: 'Oswald', system-ui, sans-serif;
+    --font-body: 'Source Serif 4', Georgia, serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--limestone); color: var(--soot); }
+  body {
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    min-height: 100svh;
+    background:
+      radial-gradient(1200px 600px at 20% -10%, rgba(212,168,67,0.10), transparent 60%),
+      radial-gradient(900px 500px at 90% 110%, rgba(168,50,50,0.08), transparent 60%),
+      var(--limestone);
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: clamp(1.25rem, 3vw, 2rem); }
+  header.kicker {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 1rem; border-bottom: 1px solid rgba(44,36,33,0.12);
+    font-family: var(--font-display); letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.78rem;
+    color: var(--soot);
+  }
+  .kicker .date { color: var(--red); font-weight: 700; }
+  .hero { padding: clamp(1.5rem, 4vw, 2.5rem) 0 0.5rem; text-align: center; }
+  .eyebrow {
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.18em;
+    font-size: 0.8rem; color: var(--red); font-weight: 700; margin-bottom: 0.75rem;
+  }
+  h1 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(2.75rem, 8vw, 4.75rem);
+    line-height: 0.95; letter-spacing: 0.02em; text-transform: uppercase;
+    margin: 0 0 0.5rem; color: var(--soot);
+  }
+  h1 .red { color: var(--red); display: block; }
+  .sub {
+    font-family: var(--font-body); font-size: clamp(1rem, 2.4vw, 1.2rem);
+    color: var(--soot); opacity: 0.82; max-width: 34ch; margin: 0.75rem auto 0;
+  }
+
+  /* ---------- QR as a bull ---------- */
+  .bull-stage {
+    margin: clamp(1.5rem, 4vw, 2.5rem) auto;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    background: var(--limestone);
+    border: 2px solid var(--soot);
+    border-radius: 18px;
+    box-shadow:
+      0 2px 0 var(--soot),
+      0 20px 50px -24px rgba(44,36,33,0.45);
+    position: relative;
+    max-width: 520px;
+  }
+  .bull-stage::before, .bull-stage::after {
+    /* corner brass rivets */
+    content: ''; position: absolute; width: 10px; height: 10px; border-radius: 50%;
+    background: var(--gold); box-shadow: 0 0 0 2px var(--soot);
+  }
+  .bull-stage::before { top: 10px; left: 10px; }
+  .bull-stage::after  { top: 10px; right: 10px; }
+  .bull-stage .rivet-bl, .bull-stage .rivet-br {
+    position: absolute; width: 10px; height: 10px; border-radius: 50%;
+    background: var(--gold); box-shadow: 0 0 0 2px var(--soot);
+  }
+  .bull-stage .rivet-bl { bottom: 10px; left: 10px; }
+  .bull-stage .rivet-br { bottom: 10px; right: 10px; }
+
+  #bullqr { display: block; width: 100%; height: auto; }
+  .scan-caption {
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.25em;
+    text-align: center; margin-top: 0.75rem; font-weight: 700; color: var(--soot);
+    font-size: clamp(0.85rem, 2.2vw, 1rem);
+  }
+  .scan-caption span { color: var(--red); }
+  .scan-fallback {
+    display: inline-block; margin-top: 0.35rem; font-family: var(--font-body);
+    font-size: 0.9rem; color: var(--soot); opacity: 0.7; text-transform: none; letter-spacing: 0;
+  }
+  .scan-fallback a { color: var(--red); font-weight: 600; text-decoration: none; border-bottom: 1px dashed rgba(168,50,50,0.4); }
+  .scan-fallback a:hover { border-bottom-style: solid; }
+
+  /* ---------- Details strip ---------- */
+  .strip {
+    display: grid; grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 0.5rem; margin: 1.5rem auto; max-width: 520px;
+    border-top: 2px solid var(--soot); border-bottom: 2px solid var(--soot);
+    padding: 0.85rem 0;
+  }
+  .strip > div { text-align: center; }
+  .strip .label {
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.14em;
+    font-size: 0.7rem; color: var(--red); font-weight: 700;
+  }
+  .strip .value {
+    font-family: var(--font-display); text-transform: uppercase;
+    font-weight: 500; color: var(--soot); font-size: 0.95rem; letter-spacing: 0.04em;
+  }
+
+  /* ---------- CTA ---------- */
+  .cta-block { text-align: center; max-width: 540px; margin: 0 auto; }
+  .cta-block p { margin: 0.5rem 0; }
+  .cta-block .lead { font-size: 1.1rem; color: var(--soot); }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: var(--red); color: var(--limestone);
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700;
+    padding: 0.95rem 1.4rem; border: 2px solid var(--soot); border-radius: 999px;
+    text-decoration: none; margin-top: 0.75rem;
+    box-shadow: 0 3px 0 var(--soot);
+    transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.15s ease;
+  }
+  .btn:hover { background: var(--red-deep); }
+  .btn:active { transform: translate(0, 3px); box-shadow: 0 0 0 var(--soot); }
+  .btn .spark { color: var(--gold); }
+
+  /* ---------- Story strip ---------- */
+  .story {
+    margin: 2.25rem auto 0; max-width: 560px;
+    font-family: var(--font-body); font-size: 1.02rem; color: var(--soot);
+  }
+  .story p { margin: 0 0 0.85rem; }
+  .story .neighbour {
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--red); font-weight: 700; font-size: 1.05rem;
+  }
+
+  footer {
+    margin-top: 2.5rem; padding-top: 1.25rem;
+    border-top: 1px solid rgba(44,36,33,0.12);
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.1em;
+    font-size: 0.72rem; color: var(--soot); opacity: 0.75;
+    display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; justify-content: space-between; align-items: center;
+  }
+  footer .tag { color: var(--red); font-weight: 700; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes ember {
+      0%, 100% { filter: drop-shadow(0 0 0 rgba(212,168,67,0)); }
+      50%      { filter: drop-shadow(0 0 6px rgba(212,168,67,0.55)); }
+    }
+    .horn, .nose-ring { animation: ember 4.5s ease-in-out infinite; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="kicker">
+    <div>Earth Village CIC &nbsp;&middot;&nbsp; Mexborough</div>
+    <div class="date">23 April &middot; High Street</div>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">200 years old · Not done yet</div>
+    <h1>
+      Rise of
+      <span class="red">The Bull</span>
+    </h1>
+    <p class="sub">The pub burned. The community said no. Scan the Bull — stand with Mexborough High Street.</p>
+  </section>
+
+  <div class="bull-stage">
+    <span class="rivet-bl"></span><span class="rivet-br"></span>
+    <!-- SVG injected by script -->
+    <svg id="bullqr" viewBox="0 0 100 100" role="img" aria-label="Rise of the Bull QR code shaped as a bull">
+      <title>Rise of the Bull QR code shaped as a bull</title>
+    </svg>
+    <div class="scan-caption">Scan the <span>Bull</span>
+      <br /><span class="scan-fallback">or tap <a href="https://inclusifund.co.uk/bull" id="fallback">inclusifund.co.uk/bull</a></span>
+    </div>
+  </div>
+
+  <div class="strip" aria-label="Event details">
+    <div><div class="label">When</div><div class="value">23 April</div></div>
+    <div><div class="label">Where</div><div class="value">Bulls Head · Mexborough</div></div>
+    <div><div class="label">Ask</div><div class="value">Your Postcode</div></div>
+  </div>
+
+  <div class="cta-block">
+    <p class="lead">Market stalls. Love locks. The Bull Signal through the roof. <br />Drop your postcode — be part of what comes next.</p>
+    <a class="btn" href="https://inclusifund.co.uk/bull"><span class="spark">&#9679;</span> Stand with the Bull</a>
+  </div>
+
+  <div class="story">
+    <p class="neighbour">A note from the neighbours —</p>
+    <p>This building's been here longer than any of us. Arson took the roof. It didn't take the Bull. We're bringing it back — market, music, a love-lock wall, and a beam of light through the open sky where the roof used to be. £5 a lock. 200 people at £50 and we own a piece of the High Street.</p>
+    <p>Come down. Bring someone. Tell somebody. The only pub in Yorkshire with a skylight you didn't ask for.</p>
+  </div>
+
+  <footer>
+    <div>&copy; Earth Village CIC · Bulls Head Campaign</div>
+    <div class="tag">#RiseOfTheBull</div>
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script>
+(function () {
+  // ============================================================
+  // Bull-QR: a scannable QR code dressed as a bull's face.
+  //
+  // Design: heritage red dots on limestone. The three finder
+  // patterns stay fully intact (scannability!), but are re-dressed:
+  //   - top-left + top-right finder patterns = the BULL'S EYES,
+  //     with horns curving up and out above them (decoration sits
+  //     OUTSIDE the QR matrix so it can't corrupt the code).
+  //   - bottom-left finder pattern = the BULL'S SNOUT RING
+  //     with two nostril dots drawn OVER the quiet-zone outside.
+  // A small shield with the bull's head sits dead-centre; error
+  // correction level H (~30%) absorbs it.
+  // ============================================================
+
+  var URL = 'https://inclusifund.co.uk/bull';
+  var svg = document.getElementById('bullqr');
+
+  // Generate QR matrix at error-correction level H (max resilience
+  // so the centre shield overlay doesn't break the scan).
+  var qr = qrcode(0, 'H');
+  qr.addData(URL);
+  qr.make();
+  var n = qr.getModuleCount();
+
+  // Layout: 4-module quiet zone on every side, plus extra at top
+  // for the horns and bottom for the snout ring drop-shadow.
+  var QZ = 4;                 // side quiet zone
+  var TOP_PAD = 10;           // extra space for horns
+  var BOT_PAD = 5;            // extra for snout
+  var total = n + QZ * 2;
+  var vbW = total;
+  var vbH = total + TOP_PAD + BOT_PAD;
+  svg.setAttribute('viewBox', '0 0 ' + vbW + ' ' + vbH);
+
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  function el(name, attrs) {
+    var e = document.createElementNS(SVGNS, name);
+    if (attrs) for (var k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+
+  // Background limestone (tight to the QR+padding, not the stage)
+  svg.appendChild(el('rect', {
+    x: 0, y: 0, width: vbW, height: vbH,
+    fill: '#F2EDE4', rx: 2, ry: 2
+  }));
+
+  // Helpers: is this module part of one of the 7x7 finder patterns?
+  function inFinder(r, c) {
+    if (r < 7 && c < 7) return 'tl';
+    if (r < 7 && c >= n - 7) return 'tr';
+    if (r >= n - 7 && c < 7) return 'bl';
+    return null;
+  }
+
+  // --- Render body of the QR (everything except finder patterns) ---
+  // Each dark module rendered as a rounded square; subtle dot feel
+  // without breaking scanner contrast (we keep the fill solid red
+  // and nearly module-sized).
+  var bodyGroup = el('g', { id: 'qr-body' });
+  for (var r = 0; r < n; r++) {
+    for (var c = 0; c < n; c++) {
+      if (inFinder(r, c)) continue;
+      if (!qr.isDark(r, c)) continue;
+      var x = QZ + c;
+      var y = QZ + r + TOP_PAD;
+      bodyGroup.appendChild(el('rect', {
+        x: x + 0.06, y: y + 0.06,
+        width: 0.88, height: 0.88,
+        rx: 0.28, ry: 0.28,
+        fill: '#A83232'
+      }));
+    }
+  }
+  svg.appendChild(bodyGroup);
+
+  // --- Custom finder patterns (eyes + snout) ---
+  // Each real QR finder is 7x7 of: outer ring (solid), quiet ring,
+  // inner 3x3 dark square. We reproduce that topology, but shaped.
+  // Finder patterns must stay *functionally* intact: outer 7x7 dark
+  // ring, 1-module light ring, solid 3x3 dark core. Keep corner
+  // radii small so the 1:1:3:1:1 scan-ratio still holds.
+  function drawEye(cx, cy) {
+    var g = el('g');
+    // Outer 7x7 (reads as the dark ring — looks like the bull's eye socket)
+    g.appendChild(el('rect', {
+      x: cx - 3.5, y: cy - 3.5, width: 7, height: 7,
+      rx: 0.6, ry: 0.6, fill: '#A83232'
+    }));
+    // 5x5 limestone (the required light ring)
+    g.appendChild(el('rect', {
+      x: cx - 2.5, y: cy - 2.5, width: 5, height: 5,
+      rx: 0.4, ry: 0.4, fill: '#F2EDE4'
+    }));
+    // 3x3 solid dark core (the pupil) — kept SOLID, no glints inside
+    g.appendChild(el('rect', {
+      x: cx - 1.5, y: cy - 1.5, width: 3, height: 3,
+      rx: 0.35, ry: 0.35, fill: '#2C2421'
+    }));
+    return g;
+  }
+
+  function drawSnout(cx, cy) {
+    // Bottom-left finder — reads as a muzzle patch but topologically
+    // identical to the other two finder patterns so scanners lock on.
+    var g = el('g');
+    g.appendChild(el('rect', {
+      x: cx - 3.5, y: cy - 3.5, width: 7, height: 7,
+      rx: 0.8, ry: 0.8, fill: '#A83232'
+    }));
+    g.appendChild(el('rect', {
+      x: cx - 2.5, y: cy - 2.5, width: 5, height: 5,
+      rx: 0.5, ry: 0.5, fill: '#F2EDE4'
+    }));
+    g.appendChild(el('rect', {
+      x: cx - 1.5, y: cy - 1.5, width: 3, height: 3,
+      rx: 0.4, ry: 0.4, fill: '#2C2421'
+    }));
+    return g;
+  }
+
+  // Position the finder-pattern centres in final SVG coords.
+  // Each finder is 7x7; its centre is at (+3.5, +3.5) of its top-left module.
+  var tlCx = QZ + 3.5;
+  var tlCy = QZ + 3.5 + TOP_PAD;
+  var trCx = QZ + (n - 7) + 3.5;
+  var trCy = QZ + 3.5 + TOP_PAD;
+  var blCx = QZ + 3.5;
+  var blCy = QZ + (n - 7) + 3.5 + TOP_PAD;
+
+  svg.appendChild(drawEye(tlCx, tlCy));
+  svg.appendChild(drawEye(trCx, trCy));
+  svg.appendChild(drawSnout(blCx, blCy));
+
+  // Nostril dots placed in the bottom quiet zone (safe — outside
+  // the finder pattern, so they don't corrupt the 3x3 dark core).
+  var nostrils = el('g');
+  nostrils.appendChild(el('circle', { cx: blCx - 0.9, cy: blCy + 4.3, r: 0.5, fill: '#2C2421' }));
+  nostrils.appendChild(el('circle', { cx: blCx + 0.9, cy: blCy + 4.3, r: 0.5, fill: '#2C2421' }));
+  svg.appendChild(nostrils);
+
+  // --- Horns: drawn in the TOP quiet zone, NEVER over modules ---
+  // Left horn curves up-and-left from above the TL eye.
+  // Right horn mirrors from above the TR eye.
+  // Quiet zone is 4 modules + top pad → plenty of runway.
+  function horn(cx, cy, dir) {
+    // dir = +1 right, -1 left
+    var baseX = cx;
+    var baseY = cy - 3.8; // just above the eye frame
+    var tipX  = cx + dir * 7.0;
+    var tipY  = cy - 10.0;
+    var ctrlX = cx + dir * 2.5;
+    var ctrlY = cy - 10.5;
+    var backX = cx + dir * 0.8;
+    var backY = cy - 4.2;
+    var d =
+      'M ' + baseX + ' ' + baseY +
+      ' Q ' + ctrlX + ' ' + ctrlY + ' ' + tipX + ' ' + tipY +
+      ' Q ' + (cx + dir * 1.2) + ' ' + (cy - 6.5) + ' ' + backX + ' ' + backY +
+      ' Z';
+    var g = el('g', { class: 'horn' });
+    g.appendChild(el('path', {
+      d: d, fill: '#2C2421', stroke: '#A83232',
+      'stroke-width': 0.25, 'stroke-linejoin': 'round'
+    }));
+    // Gold highlight along the inner edge of the horn
+    g.appendChild(el('path', {
+      d: 'M ' + baseX + ' ' + baseY +
+         ' Q ' + ctrlX + ' ' + ctrlY + ' ' + tipX + ' ' + tipY,
+      fill: 'none', stroke: '#D4A843',
+      'stroke-width': 0.45, 'stroke-linecap': 'round', opacity: 0.75
+    }));
+    return g;
+  }
+  svg.appendChild(horn(tlCx, tlCy, -1));
+  svg.appendChild(horn(trCx, trCy, +1));
+
+  // --- Forehead tuft between the horns, sitting in the quiet zone ---
+  var tuft = el('g');
+  var midX = (tlCx + trCx) / 2;
+  var tuftY = tlCy - 5.2;
+  tuft.appendChild(el('path', {
+    d: 'M ' + (midX - 1.6) + ' ' + tuftY +
+       ' q 0.4 -1.6 1.6 -1.6 q 1.2 0 1.6 1.6 z',
+    fill: '#7A1F1F'
+  }));
+  svg.appendChild(tuft);
+
+  // --- Bull ear tips poking out sideways from the top finders ---
+  function ear(cx, cy, dir) {
+    var g = el('g');
+    g.appendChild(el('path', {
+      d: 'M ' + (cx + dir * 3.5) + ' ' + cy +
+         ' q ' + (dir * 3.5) + ' -0.5 ' + (dir * 3.8) + ' -3.0' +
+         ' q ' + (-dir * 1.2) + ' 1.2 ' + (-dir * 3.8) + ' 1.6 z',
+      fill: '#7A1F1F'
+    }));
+    return g;
+  }
+  svg.appendChild(ear(tlCx, tlCy, -1));
+  svg.appendChild(ear(trCx, trCy, +1));
+
+  // --- Nose ring hanging off the snout, in the bottom quiet zone ---
+  var ringG = el('g', { class: 'nose-ring' });
+  ringG.appendChild(el('circle', {
+    cx: blCx + 5.0, cy: blCy + 1.6, r: 1.6,
+    fill: 'none', stroke: '#D4A843', 'stroke-width': 0.7
+  }));
+  svg.appendChild(ringG);
+
+  // --- Shield with bull's head, centered over the QR ---
+  // Sized to ~14% of the code area; Error Correction H tolerates it.
+  var cx = QZ + n / 2;
+  var cy = QZ + n / 2 + TOP_PAD;
+  var S = Math.max(6, Math.round(n * 0.18));  // shield size in modules
+  var shield = el('g', { id: 'center-shield' });
+  // Limestone halo so modules beneath the shield read cleanly
+  shield.appendChild(el('rect', {
+    x: cx - S / 2 - 0.6, y: cy - S / 2 - 0.6,
+    width: S + 1.2, height: S + 1.2,
+    rx: S * 0.18, ry: S * 0.18,
+    fill: '#F2EDE4'
+  }));
+  // Shield body
+  shield.appendChild(el('path', {
+    d:
+      'M ' + (cx - S / 2) + ' ' + (cy - S / 2) +
+      ' h ' + S +
+      ' v ' + (S * 0.55) +
+      ' q 0 ' + (S * 0.45) + ' ' + (-S / 2) + ' ' + (S * 0.45) +
+      ' q ' + (-S / 2) + ' 0 ' + (-S / 2) + ' ' + (-S * 0.45) +
+      ' z',
+    fill: '#A83232', stroke: '#2C2421', 'stroke-width': 0.35
+  }));
+  // Mini bull head inside the shield (geometric, matches brand)
+  var bx = cx, by = cy - S * 0.05;
+  var bullHead = el('g');
+  // Head
+  bullHead.appendChild(el('path', {
+    d: 'M ' + (bx - S * 0.2) + ' ' + (by - S * 0.08) +
+       ' q ' + (S * 0.2) + ' ' + (S * 0.25) + ' ' + (S * 0.4) + ' 0' +
+       ' q 0 ' + (S * 0.22) + ' ' + (-S * 0.2) + ' ' + (S * 0.22) +
+       ' q ' + (-S * 0.2) + ' 0 ' + (-S * 0.2) + ' ' + (-S * 0.22) + ' z',
+    fill: '#F2EDE4'
+  }));
+  // Horns
+  bullHead.appendChild(el('path', {
+    d: 'M ' + (bx - S * 0.2) + ' ' + (by - S * 0.06) +
+       ' q ' + (-S * 0.14) + ' ' + (-S * 0.08) + ' ' + (-S * 0.2) + ' ' + (-S * 0.22) +
+       ' q ' + (S * 0.02) + ' ' + (S * 0.08) + ' ' + (S * 0.2) + ' ' + (S * 0.14) + ' z',
+    fill: '#F2EDE4'
+  }));
+  bullHead.appendChild(el('path', {
+    d: 'M ' + (bx + S * 0.2) + ' ' + (by - S * 0.06) +
+       ' q ' + ( S * 0.14) + ' ' + (-S * 0.08) + ' ' + ( S * 0.2) + ' ' + (-S * 0.22) +
+       ' q ' + (-S * 0.02) + ' ' + (S * 0.08) + ' ' + (-S * 0.2) + ' ' + (S * 0.14) + ' z',
+    fill: '#F2EDE4'
+  }));
+  // Eyes
+  bullHead.appendChild(el('circle', { cx: bx - S * 0.07, cy: by + S * 0.02, r: S * 0.022, fill: '#2C2421' }));
+  bullHead.appendChild(el('circle', { cx: bx + S * 0.07, cy: by + S * 0.02, r: S * 0.022, fill: '#2C2421' }));
+  shield.appendChild(bullHead);
+  // "EST." ribbon on the shield foot
+  shield.appendChild(el('text', {
+    x: cx, y: cy + S * 0.36,
+    'text-anchor': 'middle',
+    'font-family': 'Oswald, sans-serif',
+    'font-weight': 700,
+    'font-size': S * 0.12,
+    'letter-spacing': '0.08em',
+    fill: '#F2EDE4'
+  })).textContent = 'EST. 1820s';
+  svg.appendChild(shield);
+
+  // Expose the final URL in the fallback link (already set, but
+  // re-sync in case the script ever drives the URL).
+  var fb = document.getElementById('fallback');
+  if (fb) { fb.href = URL; fb.textContent = URL.replace(/^https?:\/\//, ''); }
+})();
+</script>
+</body>
+</html>
