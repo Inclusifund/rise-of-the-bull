@@ -245,15 +245,21 @@
   qr.make();
   var n = qr.getModuleCount();
 
-  // Layout: 4-module quiet zone on every side, plus extra at top
-  // for the horns and bottom for the snout ring drop-shadow.
-  var QZ = 4;                 // side quiet zone
-  var TOP_PAD = 10;           // extra space for horns
-  var BOT_PAD = 5;            // extra for snout
-  var total = n + QZ * 2;
-  var vbW = total;
-  var vbH = total + TOP_PAD + BOT_PAD;
+  // Layout: the QR is inset inside a larger canvas so the bull's
+  // horns span wider than the QR itself and the muzzle hangs well
+  // below. The 4-module QR quiet zone is preserved untouched.
+  var QZ = 4;                 // required QR quiet zone (every side)
+  var LEFT_PAD  = 10;         // extra runway for the left horn tip + ear
+  var RIGHT_PAD = 10;         // extra runway for the right horn tip + ear
+  var TOP_PAD   = 16;         // tall enough for big curving horns
+  var BOT_PAD   = 22;         // big muzzle + nose ring + jaw
+  var vbW = n + QZ * 2 + LEFT_PAD + RIGHT_PAD;
+  var vbH = n + QZ * 2 + TOP_PAD + BOT_PAD;
   svg.setAttribute('viewBox', '0 0 ' + vbW + ' ' + vbH);
+
+  // Shorthand for "the origin of module (r,c) in SVG units"
+  var ox = QZ + LEFT_PAD;
+  var oy = QZ + TOP_PAD;
 
   var SVGNS = 'http://www.w3.org/2000/svg';
   function el(name, attrs) {
@@ -276,17 +282,186 @@
     return null;
   }
 
+  // --- BULL FURNITURE drawn BEHIND the QR (horns, ears, muzzle) ---
+  // Order matters: horns/ears/muzzle go down first so the QR modules
+  // paint cleanly on top of them. Nothing here may cross the 4-module
+  // quiet zone into QR module territory.
+  var qrLeft   = ox;
+  var qrRight  = ox + n;
+  var qrTop    = oy;
+  var qrBottom = oy + n;
+  var qrCenterX = ox + n / 2;
+
+  // ---- Horns: giant longhorn crescents attached to the forehead ----
+  // The base attaches just ABOVE the top edge of the QR (in the
+  // quiet zone), and sweeps outward past the LEFT_PAD / RIGHT_PAD.
+  function bigHorn(dir) {
+    // dir = -1 (left) or +1 (right)
+    // Base attaches above the top-left or top-right finder centres.
+    var baseCx = (dir < 0)
+      ? qrLeft + 5.5     // above TL eye area
+      : qrRight - 5.5;   // above TR eye area
+    var baseY  = qrTop - 0.4;        // right on the edge of the quiet zone
+    var baseW  = 3.4;                // base width (modules)
+    var tipX   = baseCx + dir * 10.5;
+    var tipY   = qrTop - TOP_PAD + 3;  // near the top of the canvas
+    var ctrlOutX = baseCx + dir * 3.0;
+    var ctrlOutY = qrTop - TOP_PAD * 0.25;
+    var ctrlOut2X = baseCx + dir * 9.5;
+    var ctrlOut2Y = tipY + 0.5;
+    var ctrlInX  = baseCx + dir * 7.5;
+    var ctrlInY  = qrTop - TOP_PAD * 0.45;
+    var ctrlIn2X = baseCx + dir * 2.2;
+    var ctrlIn2Y = qrTop - 1.2;
+
+    var d =
+      'M ' + (baseCx + dir * baseW / 2) + ' ' + baseY +
+      ' C ' + ctrlOutX + ' ' + ctrlOutY +
+      ', ' + ctrlOut2X + ' ' + ctrlOut2Y +
+      ', ' + tipX + ' ' + tipY +
+      ' C ' + ctrlInX + ' ' + ctrlInY +
+      ', ' + ctrlIn2X + ' ' + ctrlIn2Y +
+      ', ' + (baseCx - dir * baseW / 2) + ' ' + baseY +
+      ' Z';
+
+    var g = el('g', { class: 'horn' });
+    // Horn body — cream hide colour with dark outline (heraldic)
+    g.appendChild(el('path', {
+      d: d, fill: '#F2EDE4', stroke: '#2C2421', 'stroke-width': 0.55, 'stroke-linejoin': 'round'
+    }));
+    // Inner shadow line for volume
+    g.appendChild(el('path', {
+      d: 'M ' + (baseCx - dir * baseW * 0.15) + ' ' + (baseY - 0.5) +
+         ' Q ' + ctrlInX + ' ' + ctrlInY +
+         ' ' + (tipX - dir * 0.4) + ' ' + (tipY + 0.3),
+      fill: 'none', stroke: '#7A1F1F', 'stroke-width': 0.35, 'stroke-linecap': 'round', opacity: 0.7
+    }));
+    // Gold tip accent
+    g.appendChild(el('circle', { cx: tipX, cy: tipY, r: 0.55, fill: '#D4A843' }));
+    return g;
+  }
+  svg.appendChild(bigHorn(-1));
+  svg.appendChild(bigHorn(+1));
+
+  // ---- Ears: floppy leaf-shaped ears on the outer sides of the head ----
+  function bigEar(dir) {
+    var attachX = (dir < 0) ? qrLeft - 0.2 : qrRight + 0.2;
+    var attachY = qrTop + 4.5;                        // just below horn base
+    var tipX    = attachX + dir * 6.5;                // reaches into the side padding
+    var tipY    = attachY + 3.0;                      // droops downward
+    var g = el('g');
+    // Outer ear
+    g.appendChild(el('path', {
+      d:
+        'M ' + attachX + ' ' + attachY +
+        ' C ' + (attachX + dir * 2.5) + ' ' + (attachY - 3.0) +
+        ', ' + (tipX - dir * 1.0) + ' ' + (tipY - 2.0) +
+        ', ' + tipX + ' ' + tipY +
+        ' C ' + (tipX - dir * 2.5) + ' ' + (tipY + 2.0) +
+        ', ' + (attachX + dir * 2.0) + ' ' + (attachY + 3.8) +
+        ', ' + attachX + ' ' + (attachY + 2.5) +
+        ' Z',
+      fill: '#A83232', stroke: '#2C2421', 'stroke-width': 0.45, 'stroke-linejoin': 'round'
+    }));
+    // Inner ear (warmer pink-red)
+    g.appendChild(el('path', {
+      d:
+        'M ' + (attachX + dir * 0.5) + ' ' + (attachY + 0.6) +
+        ' C ' + (attachX + dir * 2.2) + ' ' + (attachY - 1.6) +
+        ', ' + (tipX - dir * 1.6) + ' ' + (tipY - 1.0) +
+        ', ' + (tipX - dir * 1.4) + ' ' + (tipY) +
+        ' C ' + (tipX - dir * 2.6) + ' ' + (tipY + 1.2) +
+        ', ' + (attachX + dir * 1.7) + ' ' + (attachY + 2.6) +
+        ', ' + (attachX + dir * 0.6) + ' ' + (attachY + 1.8) +
+        ' Z',
+      fill: '#D4A843', opacity: 0.55
+    }));
+    return g;
+  }
+  svg.appendChild(bigEar(-1));
+  svg.appendChild(bigEar(+1));
+
+  // ---- Muzzle: big cream snout pad drawn BELOW the QR grid ----
+  // Sits in the bottom padding so it can't touch QR modules.
+  var muzzleW = n * 0.58;
+  var muzzleH = 11;
+  var muzzleTop = qrBottom + 3.5;
+  var muzzleCx = qrCenterX;
+  var muzzleLeft = muzzleCx - muzzleW / 2;
+
+  var muzzle = el('g', { id: 'muzzle' });
+  // Jaw lines: curving in from the QR bottom corners into the muzzle top
+  muzzle.appendChild(el('path', {
+    d:
+      'M ' + qrLeft + ' ' + (qrBottom + 0.2) +
+      ' Q ' + (qrLeft + 2) + ' ' + (muzzleTop + 1.5) +
+      ' ' + muzzleLeft + ' ' + (muzzleTop + 1.5) +
+      ' L ' + (muzzleLeft + muzzleW) + ' ' + (muzzleTop + 1.5) +
+      ' Q ' + (qrRight - 2) + ' ' + (muzzleTop + 1.5) +
+      ' ' + qrRight + ' ' + (qrBottom + 0.2) +
+      ' L ' + qrRight + ' ' + (qrBottom + 2.2) +
+      ' L ' + qrLeft + ' ' + (qrBottom + 2.2) + ' Z',
+    fill: '#A83232', opacity: 0.9
+  }));
+  // Muzzle pad (cream, like a proper bull snout)
+  muzzle.appendChild(el('path', {
+    d:
+      'M ' + muzzleLeft + ' ' + (muzzleTop + muzzleH * 0.3) +
+      ' Q ' + muzzleLeft + ' ' + muzzleTop + ' ' + (muzzleLeft + muzzleH * 0.6) + ' ' + muzzleTop +
+      ' L ' + (muzzleLeft + muzzleW - muzzleH * 0.6) + ' ' + muzzleTop +
+      ' Q ' + (muzzleLeft + muzzleW) + ' ' + muzzleTop + ' ' + (muzzleLeft + muzzleW) + ' ' + (muzzleTop + muzzleH * 0.3) +
+      ' L ' + (muzzleLeft + muzzleW) + ' ' + (muzzleTop + muzzleH * 0.7) +
+      ' Q ' + (muzzleLeft + muzzleW) + ' ' + (muzzleTop + muzzleH) +
+      ' ' + (muzzleLeft + muzzleW - muzzleH * 0.65) + ' ' + (muzzleTop + muzzleH) +
+      ' L ' + (muzzleLeft + muzzleH * 0.65) + ' ' + (muzzleTop + muzzleH) +
+      ' Q ' + muzzleLeft + ' ' + (muzzleTop + muzzleH) +
+      ' ' + muzzleLeft + ' ' + (muzzleTop + muzzleH * 0.7) + ' Z',
+    fill: '#F2EDE4', stroke: '#2C2421', 'stroke-width': 0.55
+  }));
+  // Nostrils — kidney-bean shapes
+  var nostrilY = muzzleTop + muzzleH * 0.45;
+  var nostrilDX = muzzleW * 0.22;
+  muzzle.appendChild(el('ellipse', {
+    cx: muzzleCx - nostrilDX, cy: nostrilY, rx: 1.3, ry: 1.8,
+    fill: '#2C2421', transform: 'rotate(-12 ' + (muzzleCx - nostrilDX) + ' ' + nostrilY + ')'
+  }));
+  muzzle.appendChild(el('ellipse', {
+    cx: muzzleCx + nostrilDX, cy: nostrilY, rx: 1.3, ry: 1.8,
+    fill: '#2C2421', transform: 'rotate(12 ' + (muzzleCx + nostrilDX) + ' ' + nostrilY + ')'
+  }));
+  // Gold nose ring, hanging through the bottom-centre of the muzzle
+  var ringCx = muzzleCx;
+  var ringCy = muzzleTop + muzzleH + 2.8;
+  var ringR  = 3.2;
+  muzzle.appendChild(el('g', { class: 'nose-ring' })).appendChild(el('circle', {
+    cx: ringCx, cy: ringCy, r: ringR,
+    fill: 'none', stroke: '#D4A843', 'stroke-width': 0.9
+  }));
+  // Tiny anchor bead where the ring meets the muzzle
+  muzzle.appendChild(el('circle', {
+    cx: muzzleCx, cy: muzzleTop + muzzleH - 0.2, r: 0.45, fill: '#2C2421'
+  }));
+  svg.appendChild(muzzle);
+
+  // ---- Forehead topknot — fur tuft peeking between the horns ----
+  var topknot = el('g');
+  topknot.appendChild(el('path', {
+    d: 'M ' + (qrCenterX - 2.2) + ' ' + (qrTop - 0.3) +
+       ' q -0.2 -2.6 1.1 -3.4 q 1.1 -0.3 1.1 1.4' +
+       ' q 0.3 -1.5 1.3 -1.3 q 1.3 0.4 1.1 3.3 z',
+    fill: '#7A1F1F', stroke: '#2C2421', 'stroke-width': 0.35, 'stroke-linejoin': 'round'
+  }));
+  svg.appendChild(topknot);
+
   // --- Render body of the QR (everything except finder patterns) ---
-  // Each dark module rendered as a rounded square; subtle dot feel
-  // without breaking scanner contrast (we keep the fill solid red
-  // and nearly module-sized).
+  // Drawn AFTER the furniture so the modules sit crisply on top.
   var bodyGroup = el('g', { id: 'qr-body' });
   for (var r = 0; r < n; r++) {
     for (var c = 0; c < n; c++) {
       if (inFinder(r, c)) continue;
       if (!qr.isDark(r, c)) continue;
-      var x = QZ + c;
-      var y = QZ + r + TOP_PAD;
+      var x = ox + c;
+      var y = oy + r;
       bodyGroup.appendChild(el('rect', {
         x: x + 0.06, y: y + 0.06,
         width: 0.88, height: 0.88,
@@ -344,97 +519,21 @@
 
   // Position the finder-pattern centres in final SVG coords.
   // Each finder is 7x7; its centre is at (+3.5, +3.5) of its top-left module.
-  var tlCx = QZ + 3.5;
-  var tlCy = QZ + 3.5 + TOP_PAD;
-  var trCx = QZ + (n - 7) + 3.5;
-  var trCy = QZ + 3.5 + TOP_PAD;
-  var blCx = QZ + 3.5;
-  var blCy = QZ + (n - 7) + 3.5 + TOP_PAD;
+  var tlCx = ox + 3.5;
+  var tlCy = oy + 3.5;
+  var trCx = ox + (n - 7) + 3.5;
+  var trCy = oy + 3.5;
+  var blCx = ox + 3.5;
+  var blCy = oy + (n - 7) + 3.5;
 
   svg.appendChild(drawEye(tlCx, tlCy));
   svg.appendChild(drawEye(trCx, trCy));
   svg.appendChild(drawSnout(blCx, blCy));
 
-  // Nostril dots placed in the bottom quiet zone (safe — outside
-  // the finder pattern, so they don't corrupt the 3x3 dark core).
-  var nostrils = el('g');
-  nostrils.appendChild(el('circle', { cx: blCx - 0.9, cy: blCy + 4.3, r: 0.5, fill: '#2C2421' }));
-  nostrils.appendChild(el('circle', { cx: blCx + 0.9, cy: blCy + 4.3, r: 0.5, fill: '#2C2421' }));
-  svg.appendChild(nostrils);
-
-  // --- Horns: drawn in the TOP quiet zone, NEVER over modules ---
-  // Left horn curves up-and-left from above the TL eye.
-  // Right horn mirrors from above the TR eye.
-  // Quiet zone is 4 modules + top pad → plenty of runway.
-  function horn(cx, cy, dir) {
-    // dir = +1 right, -1 left
-    var baseX = cx;
-    var baseY = cy - 3.8; // just above the eye frame
-    var tipX  = cx + dir * 7.0;
-    var tipY  = cy - 10.0;
-    var ctrlX = cx + dir * 2.5;
-    var ctrlY = cy - 10.5;
-    var backX = cx + dir * 0.8;
-    var backY = cy - 4.2;
-    var d =
-      'M ' + baseX + ' ' + baseY +
-      ' Q ' + ctrlX + ' ' + ctrlY + ' ' + tipX + ' ' + tipY +
-      ' Q ' + (cx + dir * 1.2) + ' ' + (cy - 6.5) + ' ' + backX + ' ' + backY +
-      ' Z';
-    var g = el('g', { class: 'horn' });
-    g.appendChild(el('path', {
-      d: d, fill: '#2C2421', stroke: '#A83232',
-      'stroke-width': 0.25, 'stroke-linejoin': 'round'
-    }));
-    // Gold highlight along the inner edge of the horn
-    g.appendChild(el('path', {
-      d: 'M ' + baseX + ' ' + baseY +
-         ' Q ' + ctrlX + ' ' + ctrlY + ' ' + tipX + ' ' + tipY,
-      fill: 'none', stroke: '#D4A843',
-      'stroke-width': 0.45, 'stroke-linecap': 'round', opacity: 0.75
-    }));
-    return g;
-  }
-  svg.appendChild(horn(tlCx, tlCy, -1));
-  svg.appendChild(horn(trCx, trCy, +1));
-
-  // --- Forehead tuft between the horns, sitting in the quiet zone ---
-  var tuft = el('g');
-  var midX = (tlCx + trCx) / 2;
-  var tuftY = tlCy - 5.2;
-  tuft.appendChild(el('path', {
-    d: 'M ' + (midX - 1.6) + ' ' + tuftY +
-       ' q 0.4 -1.6 1.6 -1.6 q 1.2 0 1.6 1.6 z',
-    fill: '#7A1F1F'
-  }));
-  svg.appendChild(tuft);
-
-  // --- Bull ear tips poking out sideways from the top finders ---
-  function ear(cx, cy, dir) {
-    var g = el('g');
-    g.appendChild(el('path', {
-      d: 'M ' + (cx + dir * 3.5) + ' ' + cy +
-         ' q ' + (dir * 3.5) + ' -0.5 ' + (dir * 3.8) + ' -3.0' +
-         ' q ' + (-dir * 1.2) + ' 1.2 ' + (-dir * 3.8) + ' 1.6 z',
-      fill: '#7A1F1F'
-    }));
-    return g;
-  }
-  svg.appendChild(ear(tlCx, tlCy, -1));
-  svg.appendChild(ear(trCx, trCy, +1));
-
-  // --- Nose ring hanging off the snout, in the bottom quiet zone ---
-  var ringG = el('g', { class: 'nose-ring' });
-  ringG.appendChild(el('circle', {
-    cx: blCx + 5.0, cy: blCy + 1.6, r: 1.6,
-    fill: 'none', stroke: '#D4A843', 'stroke-width': 0.7
-  }));
-  svg.appendChild(ringG);
-
   // --- Shield with bull's head, centered over the QR ---
   // Sized to ~14% of the code area; Error Correction H tolerates it.
-  var cx = QZ + n / 2;
-  var cy = QZ + n / 2 + TOP_PAD;
+  var cx = ox + n / 2;
+  var cy = oy + n / 2;
   var S = Math.max(6, Math.round(n * 0.18));  // shield size in modules
   var shield = el('g', { id: 'center-shield' });
   // Limestone halo so modules beneath the shield read cleanly
