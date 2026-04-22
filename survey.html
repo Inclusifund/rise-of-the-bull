@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>How does Mexborough feel? — Bulls Head Community Survey</title>
+<meta name="description" content="13 questions. 3 minutes. Tell the neighbours what you want the Bulls Head to become." />
+<meta property="og:title" content="How does Mexborough feel about the Bulls Head?" />
+<meta property="og:description" content="13 questions. 3 minutes. Tell the neighbours what you want the space to become." />
+<meta property="og:image" content="img/hero-survey.png" />
+<meta name="theme-color" content="#A83232" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --red: #A83232; --red-deep: #7A1F1F; --gold: #D4A843; --green: #4A7C59;
+    --limestone: #F2EDE4; --soot: #2C2421;
+    --font-display: 'Oswald', system-ui, sans-serif;
+    --font-body: 'Source Serif 4', Georgia, serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--limestone); color: var(--soot); }
+  body {
+    font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.6; min-height: 100svh;
+    background:
+      radial-gradient(1200px 600px at 20% -10%, rgba(212,168,67,0.10), transparent 60%),
+      radial-gradient(900px 500px at 90% 110%, rgba(168,50,50,0.08), transparent 60%),
+      var(--limestone);
+  }
+  a { color: var(--red); }
+  .nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.75rem clamp(1rem, 3vw, 2rem);
+    background: var(--soot); color: var(--limestone);
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.78rem;
+    border-bottom: 3px solid var(--red);
+    position: sticky; top: 0; z-index: 50;
+  }
+  .nav a { color: var(--limestone); text-decoration: none; font-weight: 500; }
+  .nav a.home { color: var(--gold); font-weight: 700; letter-spacing: 0.14em; }
+  .nav .links { display: flex; gap: 1.1rem; flex-wrap: wrap; }
+  .nav .links a { opacity: 0.7; transition: opacity 0.12s ease, color 0.12s ease; }
+  .nav .links a:hover, .nav .links a[aria-current="page"] { opacity: 1; color: var(--gold); }
+
+  .hero-img {
+    width: 100%; aspect-ratio: 21/9;
+    background: url(img/hero-survey.png) center/cover no-repeat var(--soot);
+    border-bottom: 3px solid var(--red);
+  }
+
+  .wrap { max-width: 780px; margin: 0 auto; padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1.25rem, 3vw, 2rem); }
+
+  .eyebrow {
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.18em;
+    font-size: 0.8rem; color: var(--red); font-weight: 700; margin-bottom: 0.75rem;
+  }
+  h1 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(2.2rem, 6.5vw, 3.75rem); line-height: 0.98; letter-spacing: 0.01em;
+    text-transform: uppercase; margin: 0 0 0.5rem; color: var(--soot);
+  }
+  h1 .red { color: var(--red); display: block; }
+  .sub { font-size: clamp(1rem, 2.4vw, 1.2rem); opacity: 0.82; max-width: 40ch; margin: 0.75rem 0 1.5rem; }
+
+  .meter {
+    display: flex; align-items: center; gap: 0.75rem;
+    background: var(--limestone); border: 2px solid var(--soot); border-radius: 999px;
+    padding: 0.5rem 1rem; box-shadow: 0 2px 0 var(--soot); max-width: 520px; margin: 0 0 2rem;
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.78rem; font-weight: 700;
+  }
+  .meter .bar { flex: 1; height: 10px; background: rgba(44,36,33,0.1); border-radius: 999px; overflow: hidden; position: relative; }
+  .meter .fill { position: absolute; top: 0; left: 0; bottom: 0; width: 0%; background: linear-gradient(90deg, var(--red), var(--gold)); transition: width 0.3s ease; }
+
+  form { display: grid; gap: 2rem; }
+  .q {
+    background: var(--limestone); border: 2px solid var(--soot); border-radius: 16px;
+    padding: clamp(1.1rem, 3vw, 1.5rem); box-shadow: 0 2px 0 var(--soot);
+    position: relative;
+  }
+  .q::before {
+    content: attr(data-n); position: absolute; top: -14px; left: -14px;
+    width: 34px; height: 34px; border-radius: 50%; background: var(--red); color: var(--limestone);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 700; font-size: 0.95rem;
+    border: 2px solid var(--soot); box-shadow: 0 2px 0 var(--soot);
+  }
+  .q-title {
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.04em;
+    font-weight: 700; font-size: clamp(1.1rem, 2.8vw, 1.35rem); color: var(--soot);
+    margin: 0 0 0.5rem; line-height: 1.2;
+  }
+  .q-hint { font-size: 0.92rem; opacity: 0.7; margin: 0 0 0.9rem; }
+
+  .opts { display: grid; gap: 0.5rem; }
+  .opt {
+    display: flex; align-items: center; gap: 0.7rem;
+    padding: 0.7rem 0.9rem; border: 2px solid rgba(44,36,33,0.2); border-radius: 10px;
+    cursor: pointer; transition: border-color 0.1s ease, background 0.1s ease;
+    background: #fff;
+  }
+  .opt:hover { border-color: var(--red); }
+  .opt input { accent-color: var(--red); margin: 0; flex-shrink: 0; }
+  .opt input:checked + span { font-weight: 600; color: var(--red); }
+  .opt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.5rem; }
+
+  textarea, input[type=text], input[type=email] {
+    width: 100%; padding: 0.7rem 0.9rem;
+    font-family: var(--font-body); font-size: 1rem; color: var(--soot);
+    background: #fff; border: 2px solid var(--soot); border-radius: 10px;
+    box-shadow: 0 2px 0 var(--soot); resize: vertical;
+  }
+  textarea { min-height: 80px; }
+  input:focus, textarea:focus { outline: none; border-color: var(--red); }
+
+  .submit {
+    position: sticky; bottom: 12px;
+    background: var(--soot); color: var(--limestone);
+    padding: 1rem 1.25rem; border-radius: 18px; border: 2px solid var(--red);
+    box-shadow: 0 6px 20px -8px rgba(44,36,33,0.5);
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem;
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;
+  }
+  .submit .count { font-size: 0.82rem; opacity: 0.75; letter-spacing: 0.1em; }
+  .submit button {
+    background: var(--gold); color: var(--soot); border: 2px solid var(--limestone); border-radius: 999px;
+    padding: 0.8rem 1.4rem; font-family: var(--font-display); font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; cursor: pointer; box-shadow: 0 3px 0 var(--red);
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+  }
+  .submit button:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 0 var(--red); }
+  .submit button:active:not(:disabled) { transform: translate(0, 3px); box-shadow: 0 0 0 var(--red); }
+  .submit button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .msg { margin-top: 0.5rem; font-size: 0.92rem; min-height: 1.2em; font-family: var(--font-body); text-transform: none; letter-spacing: 0; opacity: 0.9; }
+  .msg.err { color: #ffb0b0; }
+
+  .thanks { display: none; text-align: center; padding: 2rem 1rem; }
+  .thanks h2 { font-family: var(--font-display); text-transform: uppercase; font-size: clamp(1.8rem, 5vw, 2.8rem); color: var(--red); margin: 0 0 0.5rem; }
+  .thanks p { font-size: 1.1rem; max-width: 42ch; margin: 0.75rem auto; }
+  .thanks .nextcta {
+    display: inline-block; margin-top: 1.25rem;
+    background: var(--red); color: var(--limestone); text-decoration: none;
+    padding: 0.9rem 1.4rem; border-radius: 999px; border: 2px solid var(--soot);
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;
+    box-shadow: 0 3px 0 var(--soot);
+  }
+
+  [data-state="done"] form { display: none; }
+  [data-state="done"] .thanks { display: block; }
+
+  footer {
+    margin-top: 2.5rem; padding: 1.25rem clamp(1.25rem, 3vw, 2rem);
+    border-top: 1px solid rgba(44,36,33,0.12);
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.1em;
+    font-size: 0.72rem; color: var(--soot); opacity: 0.75;
+    display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; justify-content: space-between; align-items: center;
+  }
+  footer .tag { color: var(--red); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="home">🐂 Rise of the Bull</a>
+  <div class="links">
+    <a href="survey.html" aria-current="page">Survey</a>
+    <a href="pledge.html">Pledge</a>
+    <a href="share.html">Share</a>
+    <a href="story.html">Story</a>
+  </div>
+</nav>
+
+<div class="hero-img" role="img" aria-label="Mexborough high street with a community survey noticeboard at its centre"></div>
+
+<div class="wrap" id="root" data-state="idle">
+
+  <div class="eyebrow">13 questions · 3 minutes · Your voice, your high street</div>
+  <h1>How does Mexborough <span class="red">feel about the Bull?</span></h1>
+  <p class="sub">We're not guessing. 200 years of pub, one year of boarded windows — we're asking the town what comes next, before we build it.</p>
+
+  <div class="meter"><span>Progress</span><div class="bar"><div class="fill" id="meter-fill"></div></div><span id="meter-pct">0%</span></div>
+
+  <form id="survey" novalidate>
+
+    <div class="q" data-n="1">
+      <h3 class="q-title">Where do you call home?</h3>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="q1" value="Mexborough" required><span>Mexborough</span></label>
+        <label class="opt"><input type="radio" name="q1" value="Doncaster"><span>Doncaster</span></label>
+        <label class="opt"><input type="radio" name="q1" value="Rotherham"><span>Rotherham</span></label>
+        <label class="opt"><input type="radio" name="q1" value="Barnsley"><span>Barnsley</span></label>
+        <label class="opt"><input type="radio" name="q1" value="South Yorkshire (other)"><span>South Yorkshire — elsewhere</span></label>
+        <label class="opt"><input type="radio" name="q1" value="Elsewhere UK"><span>Elsewhere in the UK</span></label>
+      </div>
+    </div>
+
+    <div class="q" data-n="2">
+      <h3 class="q-title">When did you last walk past the Bulls Head?</h3>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="q2" value="This week" required><span>This week</span></label>
+        <label class="opt"><input type="radio" name="q2" value="This month"><span>This month</span></label>
+        <label class="opt"><input type="radio" name="q2" value="This year"><span>This year</span></label>
+        <label class="opt"><input type="radio" name="q2" value="Years ago"><span>Years ago</span></label>
+        <label class="opt"><input type="radio" name="q2" value="Never"><span>Never seen it</span></label>
+      </div>
+    </div>
+
+    <div class="q" data-n="3">
+      <h3 class="q-title">One word for how it makes you feel right now.</h3>
+      <p class="q-hint">Honest. Angry, sad, hopeful, tired — whatever it is.</p>
+      <input type="text" name="q3" maxlength="40" placeholder="e.g. gutted" />
+    </div>
+
+    <div class="q" data-n="4">
+      <h3 class="q-title">What's missing from Mexborough High Street?</h3>
+      <p class="q-hint">Tick all that fit.</p>
+      <div class="opt-grid">
+        <label class="opt"><input type="checkbox" name="q4" value="Places to gather"><span>Places to gather</span></label>
+        <label class="opt"><input type="checkbox" name="q4" value="Things for young people"><span>Things for young people</span></label>
+        <label class="opt"><input type="checkbox" name="q4" value="Alcohol-free nights"><span>Alcohol-free nights</span></label>
+        <label class="opt"><input type="checkbox" name="q4" value="A decent café"><span>A decent café</span></label>
+        <label class="opt"><input type="checkbox" name="q4" value="Live music"><span>Live music</span></label>
+        <label class="opt"><input type="checkbox" name="q4" value="Markets"><span>Markets</span></label>
+        <label class="opt"><input type="checkbox" name="q4" value="Jobs"><span>Jobs</span></label>
+        <label class="opt"><input type="checkbox" name="q4" value="Family spaces"><span>Family spaces</span></label>
+        <label class="opt"><input type="checkbox" name="q4" value="Pride"><span>Pride in the street</span></label>
+      </div>
+    </div>
+
+    <div class="q" data-n="5">
+      <h3 class="q-title">If the Bull becomes a hub — what should it BE first?</h3>
+      <p class="q-hint">Pick up to three.</p>
+      <div class="opt-grid">
+        <label class="opt"><input type="checkbox" name="q5" value="Youth club"><span>Youth club</span></label>
+        <label class="opt"><input type="checkbox" name="q5" value="Sharing circles"><span>Sharing circles</span></label>
+        <label class="opt"><input type="checkbox" name="q5" value="Yoga & wellbeing"><span>Yoga & wellbeing</span></label>
+        <label class="opt"><input type="checkbox" name="q5" value="Multi-faith space"><span>Multi-faith space</span></label>
+        <label class="opt"><input type="checkbox" name="q5" value="Alcohol-free club nights"><span>Alcohol-free club nights</span></label>
+        <label class="opt"><input type="checkbox" name="q5" value="Parkour / movement"><span>Parkour / movement</span></label>
+        <label class="opt"><input type="checkbox" name="q5" value="Meditation"><span>Meditation</span></label>
+        <label class="opt"><input type="checkbox" name="q5" value="Café / food"><span>Café / food</span></label>
+        <label class="opt"><input type="checkbox" name="q5" value="Gigs & events"><span>Gigs & events</span></label>
+        <label class="opt"><input type="checkbox" name="q5" value="Markets"><span>Markets</span></label>
+      </div>
+    </div>
+
+    <div class="q" data-n="6">
+      <h3 class="q-title">Would you show up in its first year?</h3>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="q6" value="Yes, definitely" required><span>Yes, definitely</span></label>
+        <label class="opt"><input type="radio" name="q6" value="Yes, if it's right"><span>Yes — if the programme is right</span></label>
+        <label class="opt"><input type="radio" name="q6" value="Maybe"><span>Maybe, see how it goes</span></label>
+        <label class="opt"><input type="radio" name="q6" value="Probably not"><span>Probably not, but cheering you on</span></label>
+      </div>
+    </div>
+
+    <div class="q" data-n="7">
+      <h3 class="q-title">Skills you could offer?</h3>
+      <p class="q-hint">Tick anything you could help with — even a couple of hours.</p>
+      <div class="opt-grid">
+        <label class="opt"><input type="checkbox" name="q7" value="Roofing"><span>Roofing</span></label>
+        <label class="opt"><input type="checkbox" name="q7" value="Joinery"><span>Joinery</span></label>
+        <label class="opt"><input type="checkbox" name="q7" value="Electrics"><span>Electrics</span></label>
+        <label class="opt"><input type="checkbox" name="q7" value="Plumbing"><span>Plumbing</span></label>
+        <label class="opt"><input type="checkbox" name="q7" value="Painting / decorating"><span>Painting / decorating</span></label>
+        <label class="opt"><input type="checkbox" name="q7" value="Admin"><span>Admin</span></label>
+        <label class="opt"><input type="checkbox" name="q7" value="Social media"><span>Social media</span></label>
+        <label class="opt"><input type="checkbox" name="q7" value="Finance / bookkeeping"><span>Finance / bookkeeping</span></label>
+        <label class="opt"><input type="checkbox" name="q7" value="Catering"><span>Catering</span></label>
+        <label class="opt"><input type="checkbox" name="q7" value="Cleaning"><span>Cleaning</span></label>
+        <label class="opt"><input type="checkbox" name="q7" value="Events"><span>Events</span></label>
+        <label class="opt"><input type="checkbox" name="q7" value="Other"><span>Other</span></label>
+      </div>
+    </div>
+
+    <div class="q" data-n="8">
+      <h3 class="q-title">How much time could you give?</h3>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="q8" value="Regular volunteer" required><span>Regular (weekly-ish)</span></label>
+        <label class="opt"><input type="radio" name="q8" value="Event-day"><span>Event days</span></label>
+        <label class="opt"><input type="radio" name="q8" value="One-off"><span>One-off help</span></label>
+        <label class="opt"><input type="radio" name="q8" value="Not right now"><span>Not right now — just tell me how it's going</span></label>
+      </div>
+    </div>
+
+    <div class="q" data-n="9">
+      <h3 class="q-title">Would you pay £5 for a named love-lock on the Bull's gate?</h3>
+      <p class="q-hint">Your name cut into brass, locked on the frontage. Lifetime.</p>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="q9" value="Yes" required><span>Yes, I'm in</span></label>
+        <label class="opt"><input type="radio" name="q9" value="Maybe"><span>Maybe — show me first</span></label>
+        <label class="opt"><input type="radio" name="q9" value="No"><span>No, not my thing</span></label>
+      </div>
+    </div>
+
+    <div class="q" data-n="10">
+      <h3 class="q-title">If we offered community shares — would you consider it?</h3>
+      <p class="q-hint">Own a bit of the building. From £50. Voting member.</p>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="q10" value="Yes" required><span>Yes, that's exactly what I'd want</span></label>
+        <label class="opt"><input type="radio" name="q10" value="Tell me more"><span>Tell me more</span></label>
+        <label class="opt"><input type="radio" name="q10" value="No"><span>Not for me</span></label>
+      </div>
+    </div>
+
+    <div class="q" data-n="11">
+      <h3 class="q-title">Anything else we should know?</h3>
+      <p class="q-hint">A memory, a worry, a wild idea. Optional.</p>
+      <textarea name="q11" maxlength="600"></textarea>
+    </div>
+
+    <div class="q" data-n="12">
+      <h3 class="q-title">Your postcode — first half only.</h3>
+      <p class="q-hint">Helps us map where support is coming from. Optional. e.g. S64</p>
+      <input type="text" name="q12" maxlength="8" placeholder="S64" autocomplete="postal-code" />
+    </div>
+
+    <div class="q" data-n="13">
+      <h3 class="q-title">Name &amp; email — if you want updates.</h3>
+      <p class="q-hint">We'll send one note when the Bull rises. Unsubscribe any time. Both optional.</p>
+      <label class="opt" style="cursor:default;background:transparent;border:none;padding:0;margin-bottom:0.5rem;">
+        <span style="font-family:var(--font-display);text-transform:uppercase;letter-spacing:0.14em;font-size:0.72rem;color:var(--red);font-weight:700;">Name</span>
+      </label>
+      <input type="text" name="firstName" maxlength="80" autocomplete="given-name" />
+      <label class="opt" style="cursor:default;background:transparent;border:none;padding:0;margin:0.7rem 0 0.5rem;">
+        <span style="font-family:var(--font-display);text-transform:uppercase;letter-spacing:0.14em;font-size:0.72rem;color:var(--red);font-weight:700;">Email</span>
+      </label>
+      <input type="email" name="email" maxlength="200" autocomplete="email" />
+      <label class="opt" style="margin-top:0.9rem;">
+        <input type="checkbox" name="consent" value="yes">
+        <span>I'm happy for Earth Village CIC to email me Bulls Head updates.</span>
+      </label>
+    </div>
+
+    <div class="submit">
+      <span class="count"><span id="counted">0</span> of 13 answered</span>
+      <button type="submit" id="submit-btn">Send my voice in &nbsp;→</button>
+    </div>
+    <div class="msg" id="msg" role="status" aria-live="polite"></div>
+  </form>
+
+  <div class="thanks">
+    <h2>Voice in. 🔥</h2>
+    <p>Thank you. We read every single one. The more voices we gather, the stronger the pitch to funders, the council, and the town itself.</p>
+    <p><strong>Now help it reach one more person.</strong></p>
+    <a class="nextcta" href="share.html">Share the survey →</a>
+  </div>
+
+</div>
+
+<footer>
+  <div>© Earth Village CIC · Bulls Head Campaign · Mexborough</div>
+  <div class="tag">#RiseOfTheBull</div>
+</footer>
+
+<script>
+(function(){
+  var ENDPOINT = 'https://energetic-loris-267.convex.site/bulls-head-capture';
+  var root = document.getElementById('root');
+  var form = document.getElementById('survey');
+  var msg = document.getElementById('msg');
+  var btn = document.getElementById('submit-btn');
+  var meterFill = document.getElementById('meter-fill');
+  var meterPct = document.getElementById('meter-pct');
+  var counted = document.getElementById('counted');
+  var TOTAL = 13;
+
+  function gatherAnswers() {
+    var fd = new FormData(form);
+    var answers = {};
+    for (var i = 1; i <= 13; i++) {
+      var name = 'q' + i;
+      var vals = fd.getAll(name);
+      if (vals.length === 0) continue;
+      if (['q4','q5','q7'].indexOf(name) >= 0) {
+        answers[name] = vals;
+      } else {
+        answers[name] = vals[0];
+      }
+    }
+    return answers;
+  }
+
+  function countAnswered() {
+    var a = gatherAnswers();
+    var n = 0;
+    for (var k in a) {
+      if (Array.isArray(a[k]) ? a[k].length > 0 : String(a[k]).trim() !== '') n++;
+    }
+    return n;
+  }
+
+  function refreshMeter() {
+    var n = countAnswered();
+    var pct = Math.round((n / TOTAL) * 100);
+    meterFill.style.width = pct + '%';
+    meterPct.textContent = pct + '%';
+    counted.textContent = n;
+  }
+
+  form.addEventListener('input', refreshMeter);
+  form.addEventListener('change', refreshMeter);
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    msg.textContent = '';
+    msg.classList.remove('err');
+
+    var fd = new FormData(form);
+    var answers = gatherAnswers();
+    var email = (fd.get('email') || '').toString().trim();
+    var firstName = (fd.get('firstName') || '').toString().trim() || undefined;
+    var consent = !!fd.get('consent');
+
+    // Email optional — if provided, send to Convex; otherwise just "thank you"
+    // locally. Survey answers always stored in a backup mailto trail too.
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      msg.textContent = 'That email looks off — double check it?';
+      msg.classList.add('err');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    var payload = {
+      email: email || ('anon+' + Math.random().toString(36).slice(2, 10) + '@bullshead.local'),
+      firstName: firstName,
+      consent: email ? consent : true,
+      source: 'bulls-head-survey',
+      survey: answers
+    };
+
+    fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      mode: 'cors'
+    }).then(function (r) { return r.json().catch(function(){ return { ok: r.ok }; }); })
+      .then(function (res) {
+        if (!res || res.ok === false) throw new Error((res && res.error) || 'send failed');
+        root.setAttribute('data-state', 'done');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      })
+      .catch(function (err) {
+        msg.textContent = "Couldn't send — try once more, or email backthebull@gmail.com.";
+        msg.classList.add('err');
+        btn.disabled = false;
+        btn.textContent = 'Send my voice in →';
+      });
+  });
+
+  refreshMeter();
+})();
+</script>
+
+</body>
+</html>

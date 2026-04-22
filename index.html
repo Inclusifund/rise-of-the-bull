@@ -146,6 +146,60 @@
     color: var(--red); font-weight: 700; font-size: 1.05rem;
   }
 
+  /* ---------- Capture form (Path B) ---------- */
+  .capture {
+    margin: 2.25rem auto 0; max-width: 520px;
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    background: var(--limestone); border: 2px solid var(--soot);
+    border-radius: 18px;
+    box-shadow: 0 2px 0 var(--soot), 0 20px 50px -28px rgba(44,36,33,0.4);
+  }
+  .capture h2 {
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.08em;
+    font-weight: 700; font-size: clamp(1.2rem, 3vw, 1.45rem);
+    color: var(--soot); margin: 0 0 0.25rem;
+  }
+  .capture h2 .red { color: var(--red); }
+  .capture .lede { margin: 0 0 1rem; font-size: 0.98rem; opacity: 0.85; }
+  .capture label {
+    display: block; font-family: var(--font-display); text-transform: uppercase;
+    letter-spacing: 0.14em; font-size: 0.72rem; font-weight: 700; color: var(--red);
+    margin: 0.75rem 0 0.3rem;
+  }
+  .capture input[type="text"], .capture input[type="email"] {
+    width: 100%; padding: 0.7rem 0.85rem;
+    font-family: var(--font-body); font-size: 1rem; color: var(--soot);
+    background: #fff; border: 2px solid var(--soot); border-radius: 10px;
+    box-shadow: 0 2px 0 var(--soot);
+  }
+  .capture input:focus { outline: none; border-color: var(--red); }
+  .capture .consent {
+    display: flex; align-items: flex-start; gap: 0.55rem;
+    margin: 1rem 0 0.25rem; font-size: 0.92rem;
+  }
+  .capture .consent input { margin-top: 0.2rem; accent-color: var(--red); }
+  .capture button {
+    margin-top: 1rem; width: 100%;
+    background: var(--red); color: var(--limestone);
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700;
+    padding: 0.95rem 1.4rem; border: 2px solid var(--soot); border-radius: 999px;
+    box-shadow: 0 3px 0 var(--soot); cursor: pointer;
+    transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.15s ease;
+  }
+  .capture button:hover:not(:disabled) { background: var(--red-deep); }
+  .capture button:active:not(:disabled) { transform: translate(0, 3px); box-shadow: 0 0 0 var(--soot); }
+  .capture button:disabled { opacity: 0.55; cursor: not-allowed; }
+  .capture .msg { margin-top: 0.75rem; font-size: 0.92rem; min-height: 1.2em; }
+  .capture .msg.err { color: var(--red-deep); font-weight: 600; }
+  .capture[data-state="done"] form { display: none; }
+  .capture[data-state="done"] .done {
+    display: block; text-align: center; padding: 1rem 0 0.25rem;
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.08em;
+    font-weight: 700; color: var(--soot);
+  }
+  .capture[data-state="done"] .done .red { color: var(--red); font-size: 1.4rem; display: block; margin-bottom: 0.25rem; }
+  .capture .done { display: none; }
+
   footer {
     margin-top: 2.5rem; padding-top: 1.25rem;
     border-top: 1px solid rgba(44,36,33,0.12);
@@ -162,9 +216,73 @@
     }
     .horn, .nose-ring { animation: ember 4.5s ease-in-out infinite; }
   }
+
+  /* ---------- Top nav (cross-linking hub) ---------- */
+  .topnav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.75rem clamp(1rem, 3vw, 2rem);
+    background: var(--soot); color: var(--limestone);
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.78rem;
+    border-bottom: 3px solid var(--red);
+    position: sticky; top: 0; z-index: 50;
+  }
+  .topnav a { color: var(--limestone); text-decoration: none; font-weight: 500; }
+  .topnav a.home { color: var(--gold); font-weight: 700; letter-spacing: 0.14em; }
+  .topnav .links { display: flex; gap: 1.1rem; flex-wrap: wrap; }
+  .topnav .links a { opacity: 0.7; transition: opacity 0.12s ease, color 0.12s ease; }
+  .topnav .links a:hover { opacity: 1; color: var(--gold); }
+
+  /* ---------- 3-CTA hub (the new funnel hand-off) ---------- */
+  .hub {
+    margin: 2.5rem auto 1rem; max-width: 560px;
+    display: grid; gap: 0.75rem;
+  }
+  .hub .hub-eyebrow {
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.18em;
+    font-size: 0.78rem; font-weight: 700; color: var(--red); text-align: center;
+    margin-bottom: 0.25rem;
+  }
+  .hub a {
+    display: flex; align-items: center; gap: 0.9rem;
+    padding: 1rem 1.1rem; border-radius: 16px; border: 2px solid var(--soot);
+    background: var(--limestone); color: var(--soot); text-decoration: none;
+    box-shadow: 0 3px 0 var(--soot);
+    transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.12s ease;
+  }
+  .hub a:hover { background: #fff; transform: translate(0, -1px); box-shadow: 0 4px 0 var(--soot); }
+  .hub a:active { transform: translate(0, 2px); box-shadow: 0 1px 0 var(--soot); }
+  .hub a .icon {
+    font-size: 1.6rem; width: 2.4rem; text-align: center; flex-shrink: 0;
+  }
+  .hub a .text { flex: 1; }
+  .hub a .title {
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 700;
+    font-size: 1.1rem; color: var(--soot);
+  }
+  .hub a .title .red { color: var(--red); }
+  .hub a .sub {
+    font-family: var(--font-body); font-size: 0.92rem; opacity: 0.8; margin-top: 0.2rem;
+  }
+  .hub a .arrow {
+    font-family: var(--font-display); color: var(--red); font-weight: 700; font-size: 1.2rem;
+  }
+  .hub a.primary { background: var(--red); color: var(--limestone); }
+  .hub a.primary .title, .hub a.primary .title .red, .hub a.primary .sub, .hub a.primary .arrow { color: var(--limestone); }
+  .hub a.primary:hover { background: var(--red-deep); }
 </style>
 </head>
 <body>
+
+<nav class="topnav">
+  <a href="index.html" class="home">🐂 Rise of the Bull</a>
+  <div class="links">
+    <a href="survey.html">Survey</a>
+    <a href="pledge.html">Pledge</a>
+    <a href="share.html">Share</a>
+    <a href="story.html">Story</a>
+  </div>
+</nav>
+
 <div class="wrap">
 
   <header class="kicker">
@@ -198,16 +316,62 @@
     <div><div class="label">Ask</div><div class="value">Your Postcode</div></div>
   </div>
 
-  <div class="cta-block">
-    <p class="lead">Market stalls. Love locks. The Bull Signal through the roof. <br />Drop your postcode — be part of what comes next.</p>
-    <a class="btn" href="https://inclusifund.github.io/rise-of-the-bull/"><span class="spark">&#9679;</span> Stand with the Bull</a>
-  </div>
+  <nav class="hub" aria-label="Main actions">
+    <div class="hub-eyebrow">Three ways to stand with the Bull — pick one</div>
+    <a href="survey.html" class="primary">
+      <span class="icon">🗳️</span>
+      <span class="text">
+        <span class="title">Take the town <span class="red">survey</span></span>
+        <span class="sub">13 questions · 3 minutes · your voice on what the Bull becomes</span>
+      </span>
+      <span class="arrow">→</span>
+    </a>
+    <a href="pledge.html">
+      <span class="icon">✊</span>
+      <span class="text">
+        <span class="title">Back the <span class="red">Bull</span></span>
+        <span class="sub">Show up · graft · give · own a piece — put your name on it</span>
+      </span>
+      <span class="arrow">→</span>
+    </a>
+    <a href="share.html">
+      <span class="icon">📢</span>
+      <span class="text">
+        <span class="title">Help it reach <span class="red">one more door</span></span>
+        <span class="sub">Copy-paste blurbs, share buttons, a 30-second door-knock script</span>
+      </span>
+      <span class="arrow">→</span>
+    </a>
+  </nav>
 
   <div class="story">
     <p class="neighbour">A note from the neighbours —</p>
     <p>This building's been here longer than any of us. Arson took the roof. It didn't take the Bull. We're bringing it back — market, music, a love-lock wall, and a beam of light through the open sky where the roof used to be. £5 a lock. 200 people at £50 and we own a piece of the High Street.</p>
     <p>Come down. Bring someone. Tell somebody. The only pub in Yorkshire with a skylight you didn't ask for.</p>
   </div>
+
+  <section class="capture" id="capture" data-state="idle" aria-labelledby="capture-title">
+    <h2 id="capture-title">Stand with the <span class="red">Bull</span></h2>
+    <p class="lede">Drop your email. We'll send one note when the Bull rises — Fire Night updates, market dates, how to grab a love-lock.</p>
+    <form id="capture-form" novalidate>
+      <label for="cap-name">Your name <span style="opacity:0.5;text-transform:none;letter-spacing:0;font-weight:400;">(optional)</span></label>
+      <input id="cap-name" name="firstName" type="text" autocomplete="given-name" maxlength="80" />
+      <label for="cap-email">Email</label>
+      <input id="cap-email" name="email" type="email" autocomplete="email" required maxlength="200" />
+      <div class="consent">
+        <input id="cap-consent" name="consent" type="checkbox" required />
+        <label for="cap-consent" style="margin:0;font-family:var(--font-body);text-transform:none;letter-spacing:0;color:var(--soot);font-size:0.92rem;font-weight:400;">
+          I'm happy for Earth Village CIC to email me Bulls Head campaign updates. Unsubscribe any time.
+        </label>
+      </div>
+      <button type="submit" id="cap-btn">Count Me In <span style="color:var(--gold);">&#9679;</span></button>
+      <div class="msg" id="cap-msg" role="status" aria-live="polite"></div>
+    </form>
+    <div class="done">
+      <span class="red">You're in. 🔥</span>
+      One note incoming when the Bull rises.
+    </div>
+  </section>
 
   <footer>
     <div>&copy; Earth Village CIC · Bulls Head Campaign</div>
@@ -634,6 +798,57 @@
   // re-sync in case the script ever drives the URL).
   var fb = document.getElementById('fallback');
   if (fb) { fb.href = URL; fb.textContent = URL.replace(/^https?:\/\//, ''); }
+})();
+
+// ============================================================
+// Path B — capture form → Convex HTTP endpoint
+// ------------------------------------------------------------
+// POSTs { email, firstName, consent } to the inclusifund-crm
+// Convex deployment (energetic-loris-267). The endpoint upserts
+// the row into the existing `contacts` table with
+// source="bulls-head-qr" + tags=["bulls-head-rising"].
+// ============================================================
+(function () {
+  var CAPTURE_ENDPOINT = 'https://energetic-loris-267.convex.site/bulls-head-capture';
+  var form = document.getElementById('capture-form');
+  var section = document.getElementById('capture');
+  var btn = document.getElementById('cap-btn');
+  var msg = document.getElementById('cap-msg');
+  if (!form || !section || !btn || !msg) return;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    msg.textContent = ''; msg.className = 'msg';
+    var email = (document.getElementById('cap-email').value || '').trim();
+    var firstName = (document.getElementById('cap-name').value || '').trim();
+    var consent = document.getElementById('cap-consent').checked;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      msg.textContent = 'That email looks off — try again?'; msg.className = 'msg err'; return;
+    }
+    if (!consent) {
+      msg.textContent = 'Tick the consent box so we can email you.'; msg.className = 'msg err'; return;
+    }
+    btn.disabled = true; btn.textContent = 'Sending…';
+    fetch(CAPTURE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, firstName: firstName || undefined, consent: true })
+    })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, body: j }; }); })
+      .then(function (res) {
+        if (res.ok && res.body && res.body.ok) {
+          section.setAttribute('data-state', 'done');
+        } else {
+          msg.textContent = (res.body && res.body.error) ? res.body.error : 'Something broke — try again in a sec.';
+          msg.className = 'msg err';
+          btn.disabled = false; btn.innerHTML = 'Count Me In <span style="color:var(--gold);">●</span>';
+        }
+      })
+      .catch(function () {
+        msg.textContent = 'Network hiccup — try again?'; msg.className = 'msg err';
+        btn.disabled = false; btn.innerHTML = 'Count Me In <span style="color:var(--gold);">●</span>';
+      });
+  });
 })();
 </script>
 </body>

@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>The full story — Rise of the Bull</title>
+<meta name="description" content="200 years of pub. One year of boarded windows. The story of how Mexborough's Bulls Head is being brought back as a community hub." />
+<meta property="og:title" content="The full story — Rise of the Bull" />
+<meta property="og:description" content="200 years of pub. One year of boarded windows. How the Bulls Head is coming back." />
+<meta property="og:image" content="img/hero-story.png" />
+<meta name="theme-color" content="#A83232" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --red: #A83232; --red-deep: #7A1F1F; --gold: #D4A843; --green: #4A7C59;
+    --limestone: #F2EDE4; --soot: #2C2421;
+    --font-display: 'Oswald', system-ui, sans-serif;
+    --font-body: 'Source Serif 4', Georgia, serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--limestone); color: var(--soot); }
+  body {
+    font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.7; min-height: 100svh;
+    background:
+      radial-gradient(1200px 600px at 20% -10%, rgba(212,168,67,0.10), transparent 60%),
+      radial-gradient(900px 500px at 90% 110%, rgba(168,50,50,0.08), transparent 60%),
+      var(--limestone);
+  }
+  .nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.75rem clamp(1rem, 3vw, 2rem);
+    background: var(--soot); color: var(--limestone);
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.78rem;
+    border-bottom: 3px solid var(--red); position: sticky; top: 0; z-index: 50;
+  }
+  .nav a { color: var(--limestone); text-decoration: none; font-weight: 500; }
+  .nav a.home { color: var(--gold); font-weight: 700; letter-spacing: 0.14em; }
+  .nav .links { display: flex; gap: 1.1rem; flex-wrap: wrap; }
+  .nav .links a { opacity: 0.7; transition: opacity 0.12s ease, color 0.12s ease; }
+  .nav .links a:hover, .nav .links a[aria-current="page"] { opacity: 1; color: var(--gold); }
+
+  .hero-img {
+    width: 100%; aspect-ratio: 21/9;
+    background: url(img/hero-story.png) center/cover no-repeat var(--soot);
+    border-bottom: 3px solid var(--red);
+  }
+
+  .wrap { max-width: 720px; margin: 0 auto; padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1.25rem, 3vw, 2rem); }
+
+  .eyebrow { font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.18em;
+    font-size: 0.8rem; color: var(--red); font-weight: 700; margin-bottom: 0.75rem; }
+  h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.2rem, 7.5vw, 4.2rem);
+    line-height: 0.98; letter-spacing: 0.01em; text-transform: uppercase; margin: 0 0 0.5rem; color: var(--soot); }
+  h1 .red { color: var(--red); display: block; }
+  .dek { font-size: clamp(1.05rem, 2.4vw, 1.22rem); opacity: 0.85; margin: 0.75rem 0 2rem; font-style: italic; color: var(--soot); }
+
+  h2 {
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.03em;
+    font-size: clamp(1.4rem, 3.4vw, 1.8rem); margin: 2.5rem 0 0.6rem; color: var(--soot); line-height: 1.1;
+  }
+  h2 .red { color: var(--red); }
+  p { margin: 0 0 1.1em; }
+  p strong { color: var(--red-deep); }
+
+  .pullquote {
+    border-left: 4px solid var(--red); padding: 0.25rem 0 0.25rem 1rem;
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.03em; font-weight: 500;
+    font-size: clamp(1.2rem, 3vw, 1.5rem); color: var(--soot); line-height: 1.2;
+    margin: 1.5rem 0;
+  }
+
+  .byline {
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.12em;
+    font-size: 0.78rem; font-weight: 700; color: var(--red); margin: 0 0 2rem; opacity: 0.85;
+  }
+
+  .testimonial-block {
+    background: var(--limestone); border: 2px solid var(--soot); border-radius: 14px;
+    padding: clamp(1rem, 3vw, 1.35rem); margin: 0 0 1rem; box-shadow: 0 2px 0 var(--soot);
+    position: relative;
+  }
+  .testimonial-block .mark {
+    position: absolute; top: -18px; left: 18px;
+    background: var(--red); color: var(--limestone); border: 2px solid var(--soot);
+    width: 34px; height: 34px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Source Serif 4', serif; font-weight: 700; font-size: 1.5rem;
+    box-shadow: 0 2px 0 var(--soot);
+  }
+  .testimonial-block p { font-size: 1rem; line-height: 1.65; margin: 0 0 0.75rem; }
+  .testimonial-block .attr {
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.12em;
+    font-size: 0.78rem; font-weight: 700; color: var(--red); margin: 0;
+  }
+
+  .budget-row {
+    display: grid; grid-template-columns: 1fr auto; gap: 0.5rem 1rem;
+    padding: 0.6rem 0; border-bottom: 1px solid rgba(44,36,33,0.2);
+    font-family: var(--font-body);
+  }
+  .budget-row:last-child { border-bottom: none; }
+  .budget-row strong { font-family: var(--font-display); letter-spacing: 0.04em; color: var(--red); }
+
+  .vision {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.6rem; margin: 1rem 0;
+  }
+  .vision .chip {
+    background: var(--soot); color: var(--limestone); padding: 0.8rem 1rem; border-radius: 999px;
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;
+    font-size: 0.88rem; text-align: center; border: 2px solid var(--red);
+  }
+  .vision .chip:nth-child(even) { background: var(--red); border-color: var(--soot); }
+
+  .press {
+    background: var(--soot); color: var(--limestone); border-radius: 18px;
+    padding: clamp(1.25rem, 3.5vw, 1.8rem); margin: 2.5rem 0; border: 2px solid var(--gold);
+    box-shadow: 0 3px 0 var(--gold);
+  }
+  .press h2 { color: var(--gold); margin-top: 0; }
+  .press a { color: var(--gold); font-weight: 600; }
+
+  .cta-stack { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1.5rem 0 2rem; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--red); color: var(--limestone); text-decoration: none;
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;
+    padding: 0.85rem 1.25rem; border: 2px solid var(--soot); border-radius: 999px;
+    box-shadow: 0 3px 0 var(--soot); font-size: 0.92rem;
+  }
+  .btn.gold { background: var(--gold); color: var(--soot); }
+  .btn:hover { background: var(--red-deep); }
+  .btn.gold:hover { background: #B8923A; }
+
+  footer {
+    margin-top: 2.5rem; padding: 1.25rem clamp(1.25rem, 3vw, 2rem);
+    border-top: 1px solid rgba(44,36,33,0.12);
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.1em;
+    font-size: 0.72rem; opacity: 0.75;
+    display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; justify-content: space-between; align-items: center;
+  }
+  footer .tag { color: var(--red); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="home">🐂 Rise of the Bull</a>
+  <div class="links">
+    <a href="survey.html">Survey</a>
+    <a href="pledge.html">Pledge</a>
+    <a href="share.html">Share</a>
+    <a href="story.html" aria-current="page">Story</a>
+  </div>
+</nav>
+
+<div class="hero-img" role="img" aria-label="The Bulls Head Mexborough — boarded windows, scorched brickwork, partially burnt roof, original painted sign still legible"></div>
+
+<div class="wrap">
+
+  <div class="eyebrow">The full read · 5 minutes</div>
+  <h1>200 years.<span class="red">One fire. Not done.</span></h1>
+  <p class="dek">The story of why a boarded-up Victorian pub on a South Yorkshire high street is about to become one of the most interesting community projects in the country — and why we're asking you to stand with it.</p>
+  <p class="byline">Written by Earth Village CIC · April 2026 · Mexborough, South Yorkshire</p>
+
+  <h2>The building</h2>
+  <p>The Bulls Head has stood on Mexborough High Street since 1878. It outlived two world wars, the fall of the pits, three generations of landlords, and the slow emptying of the town centre that every British working-class high street knows by heart. For most of that time it was a pub — the kind where the beer was cheap, the carpet was sticky, the back room held a funeral and a wedding in the same week.</p>
+  <p>In 2024, it was set on fire. The roof went. The inside went. The windows got boarded up. And for a long year, it sat there — scorched, silent, and staring out at the £40 million regeneration of the borough happening around it.</p>
+
+  <div class="pullquote">"200 years old. Burned by arson. Left for dead. But this pub's not done yet."</div>
+
+  <h2>Justin</h2>
+  <p>Justin Harris still owns the building. He didn't flip it. He didn't sell it for flats. He sat tight through the fire, through the insurance fights, through the boarding-up, and waited for something worth doing. When Earth Village CIC walked through the door with a plan for a community hub — not a pub — he said yes.</p>
+  <p>That's rare. In most towns, a building like this gets bought by a developer, stripped of anything heritage-worthy, and turned into a block of flats you can't afford. The Bulls Head gets a different ending because Justin said so.</p>
+
+  <h2>Earth Village <span class="red">CIC</span></h2>
+  <p>Earth Village isn't new to this. For years they've been running gatherings — off-grid, phone-free, all-ages — where people rediscover what community actually feels like. The festivals are the proof-of-concept. The Bulls Head is the next step: <strong>take that feeling off the fields and drop it onto a high street, year-round, walk-in, free at the point of use.</strong></p>
+  <p>Here's what people who've been part of it already say about Earth Village:</p>
+
+  <div class="testimonial-block">
+    <span class="mark">"</span>
+    <p>Earth Village CIC has given me a huge amount of life experience in events planning and organising. It taught me about myself and how I show up for those around me during stressful and pressured situations. But it also taught me what it means to show up for community, outside of my self and my own objections. And how showing up for community allows me to be able to lean into others more too.</p>
+    <p class="attr">— Eleanor Thompson</p>
+  </div>
+
+  <div class="testimonial-block">
+    <span class="mark">"</span>
+    <p>Earth Village CIC gave me a lived experience of community that translated into real-world skills: communication, cooperation and emotional awareness. I learned how to show up for others while staying grounded in myself, and how shared responsibility creates resilience. It has changed how I view human connection — not as something passive, but as something we actively build together.</p>
+    <p class="attr">— James Love</p>
+  </div>
+
+  <div class="testimonial-block">
+    <span class="mark">"</span>
+    <p>As a single mother who spends the majority of my days alone struggling with the overwhelm of life, the Earth Village gathering is a place I can be my whole self. A place where my shoulders drop, my jaw unclenches, and I feel safe, held, and free. Watching my little girl climb trees, play and dance with the other children whilst us mammas rest and connect — what more could a mother want?</p>
+    <p class="attr">— Alisia Clewlow</p>
+  </div>
+
+  <div class="testimonial-block">
+    <span class="mark">"</span>
+    <p>Coming to The Village was a chance for me and my family to breathe. For me to recognise how much I'd been carrying, to put some of it down, and to face accountability. To have such a space was very much needed. Having it year round would make it more accessible. Somewhere with no screens, just nature and community, was truly magical.</p>
+    <p class="attr">— Lola Jane Thorne</p>
+  </div>
+
+  <div class="testimonial-block">
+    <span class="mark">"</span>
+    <p>I came with my eldest son, who was really struggling after losing his mum. At just 14, he was withdrawn, unsure of himself, and honestly didn't want to come at first. From the moment we arrived, there was a real sense of warmth and community. He was welcomed in — no pressure, no expectations, just people being kind, open, and present. Over a short space of time, I saw him begin to relax, to talk more, and to feel like he belonged somewhere again. That shift meant everything.</p>
+    <p class="attr">— Andy Si</p>
+  </div>
+
+  <h2>The <span class="red">vision</span></h2>
+  <p>The Bulls Head, rebuilt and reopened, will be:</p>
+
+  <div class="vision">
+    <div class="chip">Youth club</div>
+    <div class="chip">Sharing circles</div>
+    <div class="chip">Yoga / wellbeing</div>
+    <div class="chip">Multi-faith space</div>
+    <div class="chip">Parkour / movement</div>
+    <div class="chip">Alcohol-free nights</div>
+    <div class="chip">Live music</div>
+    <div class="chip">Markets</div>
+    <div class="chip">Meditation</div>
+    <div class="chip">Community café</div>
+  </div>
+
+  <p>All of this, in one building, at the centre of a town that right now has nowhere to do any of it. Free at the point of use wherever possible. Pay-what-you-can where it isn't. No one priced out.</p>
+
+  <div class="pullquote">"The only pub in Yorkshire with a skylight you didn't ask for."</div>
+
+  <h2>The <span class="red">money</span></h2>
+  <p>Let's be straight about this. Here's roughly what the building needs, before it can do any of the above:</p>
+
+  <div style="background:var(--limestone);border:2px solid var(--soot);border-radius:14px;padding:clamp(1rem,3vw,1.25rem);box-shadow:0 2px 0 var(--soot);margin:1rem 0 1.5rem;">
+    <div class="budget-row"><span>Roof stabilisation + temporary cover</span><strong>~£12,000</strong></div>
+    <div class="budget-row"><span>Structural survey + listed-building checks</span><strong>~£3,000</strong></div>
+    <div class="budget-row"><span>Clear-out + emergency electrics</span><strong>~£5,000</strong></div>
+    <div class="budget-row"><span>Opening weekend — market, lock wall, Bull Signal</span><strong>~£2,500</strong></div>
+    <div class="budget-row"><span>Year-1 programming budget (speakers, youth sessions, events)</span><strong>~£18,000</strong></div>
+    <div class="budget-row"><span>Community-ownership legal structure (CBS setup)</span><strong>~£1,500</strong></div>
+    <div class="budget-row" style="border-top:2px solid var(--soot);margin-top:0.3rem;padding-top:0.75rem;"><span><strong>Phase 1 total target</strong></span><strong style="color:var(--red-deep);">£42,000</strong></div>
+  </div>
+
+  <p>We're applying for £16,500 through the Architectural Heritage Fund. We're asking the town for love-locks (£5 each), beam sponsors (£50), and founder-wall plaques (£500). And we'll issue community shares — one person, one vote — so the building's ownership never leaves Mexborough.</p>
+  <p><strong>Every penny goes on the building and its programme. Not a single salary comes out of grant money until the hub is actually running.</strong></p>
+
+  <h2>How to <span class="red">stand with us</span></h2>
+  <div class="cta-stack">
+    <a class="btn" href="survey.html">🗳️ Take the survey</a>
+    <a class="btn gold" href="pledge.html">✊ Make a pledge</a>
+    <a class="btn" href="share.html">📢 Share with a neighbour</a>
+  </div>
+
+  <div class="press">
+    <h2>For the <span style="color:var(--limestone);opacity:0.8;">press</span></h2>
+    <p>We're happy to speak to local and national press, trade publications, and heritage/regeneration outlets. The story has real legs: arson, community rebuild, 200-year-old pub, £40m regeneration zone, working-class cultural infrastructure.</p>
+    <p><strong>Contact:</strong> <a href="mailto:backthebull@gmail.com">backthebull@gmail.com</a><br>
+       <strong>Earth Village CIC:</strong> <a href="https://www.ourearthvillage.org" target="_blank" rel="noopener">ourearthvillage.org</a><br>
+       <strong>Building owner:</strong> Justin Harris (available for quotes on request)<br>
+       <strong>Press pack:</strong> Available on request — includes long & short press releases, high-res images, quotes, and a fact sheet.</p>
+  </div>
+
+  <h2>Partners</h2>
+  <p>Earth Village CIC is leading on this in partnership with <strong>Justin Harris</strong> (building owner), with support being invited from the Mexborough Community Action Group, Barnsley &amp; Doncaster arts networks, and the wider South Yorkshire regeneration programme. If you're an organisation that wants to align formally, email <a href="mailto:backthebull@gmail.com">backthebull@gmail.com</a>.</p>
+
+</div>
+
+<footer>
+  <div>© Earth Village CIC · Bulls Head Campaign · Mexborough · Est. 1878 → Reborn 2026</div>
+  <div class="tag">#RiseOfTheBull</div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Back the Bull — Put your name on it</title>
+<meta name="description" content="Four ways to stand with the Bulls Head. Show up. Graft. Give. Own a piece." />
+<meta property="og:title" content="Back the Bull — put your name on it" />
+<meta property="og:description" content="Four ways to stand with the Bulls Head. Show up. Graft. Give. Own a piece." />
+<meta property="og:image" content="img/hero-pledge.png" />
+<meta name="theme-color" content="#A83232" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --red: #A83232; --red-deep: #7A1F1F; --gold: #D4A843; --green: #4A7C59;
+    --limestone: #F2EDE4; --soot: #2C2421;
+    --font-display: 'Oswald', system-ui, sans-serif;
+    --font-body: 'Source Serif 4', Georgia, serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--limestone); color: var(--soot); }
+  body {
+    font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.6; min-height: 100svh;
+    background:
+      radial-gradient(1200px 600px at 20% -10%, rgba(212,168,67,0.10), transparent 60%),
+      radial-gradient(900px 500px at 90% 110%, rgba(168,50,50,0.08), transparent 60%),
+      var(--limestone);
+  }
+  .nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.75rem clamp(1rem, 3vw, 2rem);
+    background: var(--soot); color: var(--limestone);
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.78rem;
+    border-bottom: 3px solid var(--red);
+    position: sticky; top: 0; z-index: 50;
+  }
+  .nav a { color: var(--limestone); text-decoration: none; font-weight: 500; }
+  .nav a.home { color: var(--gold); font-weight: 700; letter-spacing: 0.14em; }
+  .nav .links { display: flex; gap: 1.1rem; flex-wrap: wrap; }
+  .nav .links a { opacity: 0.7; transition: opacity 0.12s ease, color 0.12s ease; }
+  .nav .links a:hover, .nav .links a[aria-current="page"] { opacity: 1; color: var(--gold); }
+
+  .hero-img {
+    width: 100%; aspect-ratio: 21/9;
+    background: url(img/hero-pledge.png) center/cover no-repeat var(--soot);
+    border-bottom: 3px solid var(--red);
+  }
+
+  .wrap { max-width: 900px; margin: 0 auto; padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1.25rem, 3vw, 2rem); }
+
+  .eyebrow { font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.18em;
+    font-size: 0.8rem; color: var(--red); font-weight: 700; margin-bottom: 0.75rem; }
+  h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.2rem, 7vw, 4rem);
+    line-height: 0.98; letter-spacing: 0.01em; text-transform: uppercase; margin: 0 0 0.5rem; color: var(--soot); }
+  h1 .red { color: var(--red); display: block; }
+  .sub { font-size: clamp(1rem, 2.4vw, 1.2rem); opacity: 0.85; max-width: 50ch; margin: 0.75rem 0 2rem; }
+
+  .tiers { display: grid; grid-template-columns: 1fr; gap: 1rem; margin: 0 0 2rem; }
+  @media (min-width: 720px) { .tiers { grid-template-columns: repeat(2, 1fr); } }
+
+  .tier {
+    background: var(--limestone); border: 2px solid var(--soot); border-radius: 18px;
+    padding: clamp(1.1rem, 3vw, 1.5rem); box-shadow: 0 2px 0 var(--soot);
+    cursor: pointer; transition: transform 0.08s ease, box-shadow 0.08s ease, border-color 0.12s ease;
+    display: block; position: relative;
+    user-select: none;
+  }
+  .tier:hover { border-color: var(--red); }
+  .tier input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
+  .tier[data-selected="true"] {
+    border-color: var(--red); background: #fff;
+    transform: translate(0, -2px); box-shadow: 0 5px 0 var(--soot);
+  }
+  .tier[data-selected="true"] .tier-title { color: var(--red); }
+
+  .tier-title {
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.04em;
+    font-weight: 700; font-size: clamp(1.4rem, 3.4vw, 1.7rem); color: var(--soot);
+    margin: 0 0 0.5rem; line-height: 1;
+  }
+  .tier-kicker {
+    display: inline-block; font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.14em;
+    background: var(--red); color: var(--limestone); padding: 0.3rem 0.7rem; border-radius: 999px;
+    font-size: 0.72rem; font-weight: 700; margin-bottom: 0.75rem;
+  }
+  .tier-body { font-size: 1rem; opacity: 0.85; margin: 0 0 0.9rem; }
+  .tier-meta { font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; color: var(--soot); font-weight: 700; opacity: 0.7; }
+  .tier-meta .red { color: var(--red); }
+
+  .extras {
+    background: var(--limestone); border: 2px solid var(--soot); border-radius: 18px;
+    padding: clamp(1.1rem, 3vw, 1.5rem); box-shadow: 0 2px 0 var(--soot); margin: 0 0 2rem;
+  }
+  .extras h2 {
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.05em;
+    font-size: clamp(1.2rem, 3vw, 1.5rem); margin: 0 0 0.5rem; color: var(--soot);
+  }
+  .extras .lede { font-size: 0.98rem; opacity: 0.85; margin: 0 0 1rem; }
+
+  .extras label {
+    display: block; font-family: var(--font-display); text-transform: uppercase;
+    letter-spacing: 0.14em; font-size: 0.72rem; font-weight: 700; color: var(--red); margin: 0.75rem 0 0.3rem;
+  }
+  .extras input[type=text], .extras input[type=email] {
+    width: 100%; padding: 0.7rem 0.85rem;
+    font-family: var(--font-body); font-size: 1rem; color: var(--soot);
+    background: #fff; border: 2px solid var(--soot); border-radius: 10px;
+    box-shadow: 0 2px 0 var(--soot);
+  }
+  .extras input:focus { outline: none; border-color: var(--red); }
+
+  .amount-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.3rem 0 0.5rem; }
+  .chip {
+    padding: 0.55rem 0.95rem; border: 2px solid var(--soot); background: #fff; border-radius: 999px;
+    font-family: var(--font-display); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700;
+    cursor: pointer; font-size: 0.9rem; color: var(--soot);
+    box-shadow: 0 2px 0 var(--soot); transition: transform 0.08s ease, background 0.12s ease;
+  }
+  .chip:hover { background: var(--limestone); }
+  .chip[data-selected="true"] { background: var(--red); color: var(--limestone); transform: translateY(-1px); }
+  #give-custom { display: none; width: 8rem; margin-top: 0.25rem; }
+  #give-custom.show { display: inline-block; }
+
+  .skill-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.5rem; margin-top: 0.25rem;
+  }
+  .skill {
+    display: flex; align-items: center; gap: 0.55rem;
+    padding: 0.6rem 0.85rem; border: 2px solid rgba(44,36,33,0.2); border-radius: 10px;
+    cursor: pointer; background: #fff; font-size: 0.95rem;
+  }
+  .skill:hover { border-color: var(--red); }
+  .skill input { accent-color: var(--red); }
+  .skill input:checked + span { color: var(--red); font-weight: 600; }
+
+  .consent {
+    display: flex; align-items: flex-start; gap: 0.55rem;
+    margin: 1.2rem 0 0.25rem; font-size: 0.95rem;
+  }
+  .consent input { accent-color: var(--red); margin-top: 0.2rem; }
+
+  .submit-bar {
+    background: var(--soot); color: var(--limestone);
+    padding: 1rem 1.25rem; border-radius: 18px; border: 2px solid var(--red);
+    box-shadow: 0 6px 20px -8px rgba(44,36,33,0.5);
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem;
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;
+    position: sticky; bottom: 12px; margin-top: 1rem;
+  }
+  .submit-bar .state { font-size: 0.82rem; opacity: 0.75; letter-spacing: 0.1em; }
+  .submit-bar button {
+    background: var(--gold); color: var(--soot); border: 2px solid var(--limestone); border-radius: 999px;
+    padding: 0.85rem 1.5rem; font-family: var(--font-display); font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; cursor: pointer; box-shadow: 0 3px 0 var(--red);
+  }
+  .submit-bar button:hover:not(:disabled) { transform: translateY(-1px); }
+  .submit-bar button:active:not(:disabled) { transform: translate(0, 3px); box-shadow: 0 0 0 var(--red); }
+  .submit-bar button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .msg { margin-top: 0.5rem; font-size: 0.92rem; min-height: 1.2em; }
+  .msg.err { color: var(--red-deep); font-weight: 600; }
+
+  .thanks { display: none; text-align: center; padding: 2rem 1rem; }
+  .thanks h2 { font-family: var(--font-display); text-transform: uppercase; font-size: clamp(1.8rem, 5vw, 2.8rem); color: var(--red); margin: 0 0 0.5rem; }
+  .thanks p { font-size: 1.1rem; max-width: 44ch; margin: 0.75rem auto; }
+  .thanks .nextcta {
+    display: inline-block; margin-top: 1.25rem;
+    background: var(--red); color: var(--limestone); text-decoration: none;
+    padding: 0.9rem 1.4rem; border-radius: 999px; border: 2px solid var(--soot);
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;
+    box-shadow: 0 3px 0 var(--soot);
+  }
+
+  [data-state="done"] form, [data-state="done"] .tiers, [data-state="done"] .submit-bar { display: none; }
+  [data-state="done"] .thanks { display: block; }
+
+  footer {
+    margin-top: 2.5rem; padding: 1.25rem clamp(1.25rem, 3vw, 2rem);
+    border-top: 1px solid rgba(44,36,33,0.12);
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.1em;
+    font-size: 0.72rem; opacity: 0.75;
+    display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; justify-content: space-between; align-items: center;
+  }
+  footer .tag { color: var(--red); font-weight: 700; }
+
+  /* Extras visibility per tier */
+  .extras [data-for] { display: none; }
+  [data-tier="show_up"] .extras [data-for~="show_up"],
+  [data-tier="graft"]   .extras [data-for~="graft"],
+  [data-tier="give"]    .extras [data-for~="give"],
+  [data-tier="own"]     .extras [data-for~="own"] { display: block; }
+  [data-tier=""] .extras-body { display: none; }
+  .extras-pick {
+    text-align: center; padding: 0.6rem; font-family: var(--font-display);
+    text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.88rem; color: var(--soot); opacity: 0.7;
+  }
+  [data-tier=""] .extras-pick { display: block; }
+  [data-tier]:not([data-tier=""]) .extras-pick { display: none; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="home">🐂 Rise of the Bull</a>
+  <div class="links">
+    <a href="survey.html">Survey</a>
+    <a href="pledge.html" aria-current="page">Pledge</a>
+    <a href="share.html">Share</a>
+    <a href="story.html">Story</a>
+  </div>
+</nav>
+
+<div class="hero-img" role="img" aria-label="Weathered hand placing a brass COMMUNITY padlock on an iron gate outside a derelict pub"></div>
+
+<div class="wrap" id="root" data-state="idle" data-tier="">
+
+  <div class="eyebrow">Pick your lane · Put your name on it</div>
+  <h1>Back <span class="red">the Bull</span></h1>
+  <p class="sub">Four ways to stand with the Bulls Head. Pick the one that fits — you can change your mind. No fuss, no pressure, nothing auto-charged.</p>
+
+  <div class="tiers" role="radiogroup" aria-label="Pledge tier">
+
+    <label class="tier" data-tier-option="show_up">
+      <input type="radio" name="tier" value="show_up">
+      <span class="tier-kicker">Free</span>
+      <h2 class="tier-title">✊ Show up</h2>
+      <p class="tier-body">Come down. Bring someone. Vote with your feet on opening day and the events after. We send one short note before each one.</p>
+      <p class="tier-meta">No money. <span class="red">Shows the town's not empty.</span></p>
+    </label>
+
+    <label class="tier" data-tier-option="graft">
+      <input type="radio" name="tier" value="graft">
+      <span class="tier-kicker">Skills</span>
+      <h2 class="tier-title">🔨 Graft</h2>
+      <p class="tier-body">Roofer, joiner, plumber, sparky, marketer, accountant, barista, parent who can run a youth session — name what you'd lend, for how long. We'll match you to a real job.</p>
+      <p class="tier-meta">A few hours or a few weekends. <span class="red">Hands over money.</span></p>
+    </label>
+
+    <label class="tier" data-tier-option="give">
+      <input type="radio" name="tier" value="give">
+      <span class="tier-kicker">£5–£500</span>
+      <h2 class="tier-title">💷 Give</h2>
+      <p class="tier-body">£5 = your name on a love-lock on the gate. £50 = a beam sponsor. £500 = a founder-wall plaque. Every penny goes on the building, never a salary.</p>
+      <p class="tier-meta">One-off. <span class="red">Zero auto-charge ever.</span></p>
+    </label>
+
+    <label class="tier" data-tier-option="own">
+      <input type="radio" name="tier" value="own">
+      <span class="tier-kicker">Coming soon</span>
+      <h2 class="tier-title">🏛️ Own a piece</h2>
+      <p class="tier-body">When we issue community shares, we'll email you first. One person one vote. Ownership that doesn't leave the town. From £50 a share.</p>
+      <p class="tier-meta">Pre-register your interest. <span class="red">No commitment yet.</span></p>
+    </label>
+
+  </div>
+
+  <form id="pledge-form" class="extras" novalidate>
+
+    <h2>Your details</h2>
+    <p class="lede extras-pick">Pick a lane above to see what we need.</p>
+    <div class="extras-body">
+      <p class="lede">Short and sharp. We only ask for what that lane needs.</p>
+
+      <!-- Common -->
+      <label for="p-name">Your name</label>
+      <input id="p-name" name="firstName" type="text" autocomplete="given-name" maxlength="80" />
+
+      <label for="p-email">Email</label>
+      <input id="p-email" name="email" type="email" autocomplete="email" maxlength="200" required />
+
+      <label for="p-postcode">Postcode (first half)</label>
+      <input id="p-postcode" name="postcode" type="text" autocomplete="postal-code" maxlength="8" placeholder="S64" />
+
+      <!-- GRAFT only -->
+      <div data-for="graft">
+        <label>Skills you can bring</label>
+        <div class="skill-grid">
+          <label class="skill"><input type="checkbox" name="skills" value="Roofing"><span>Roofing</span></label>
+          <label class="skill"><input type="checkbox" name="skills" value="Joinery"><span>Joinery</span></label>
+          <label class="skill"><input type="checkbox" name="skills" value="Electrics"><span>Electrics</span></label>
+          <label class="skill"><input type="checkbox" name="skills" value="Plumbing"><span>Plumbing</span></label>
+          <label class="skill"><input type="checkbox" name="skills" value="Painting"><span>Painting</span></label>
+          <label class="skill"><input type="checkbox" name="skills" value="Admin"><span>Admin</span></label>
+          <label class="skill"><input type="checkbox" name="skills" value="Social media"><span>Social media</span></label>
+          <label class="skill"><input type="checkbox" name="skills" value="Finance"><span>Finance</span></label>
+          <label class="skill"><input type="checkbox" name="skills" value="Catering"><span>Catering</span></label>
+          <label class="skill"><input type="checkbox" name="skills" value="Events"><span>Events</span></label>
+          <label class="skill"><input type="checkbox" name="skills" value="Youth work"><span>Youth work</span></label>
+          <label class="skill"><input type="checkbox" name="skills" value="Other"><span>Other</span></label>
+        </div>
+        <label for="p-graft-notes">Any detail you want us to have (hours, trades, constraints)</label>
+        <input id="p-graft-notes" name="graftNotes" type="text" maxlength="240" />
+      </div>
+
+      <!-- GIVE only -->
+      <div data-for="give">
+        <label>How much?</label>
+        <div class="amount-chips" role="radiogroup" aria-label="Donation amount">
+          <button type="button" class="chip" data-amount="5">£5</button>
+          <button type="button" class="chip" data-amount="50">£50</button>
+          <button type="button" class="chip" data-amount="500">£500</button>
+          <button type="button" class="chip" data-amount="custom">Other</button>
+        </div>
+        <input id="give-custom" name="giveCustom" type="text" inputmode="numeric" maxlength="7" placeholder="£ amount" />
+        <label for="p-lock-name">Name to cut into your love-lock (optional)</label>
+        <input id="p-lock-name" name="lockName" type="text" maxlength="40" placeholder="e.g. The Harris Family" />
+      </div>
+
+      <!-- OWN only -->
+      <div data-for="own">
+        <label for="p-own-interest">How much might you invest? (range, no commitment)</label>
+        <input id="p-own-interest" name="ownInterest" type="text" maxlength="60" placeholder="e.g. £50–£200 / £500+ / just keep me informed" />
+      </div>
+
+      <!-- SHOW UP only — nothing extra -->
+      <div data-for="show_up"></div>
+
+      <label class="consent">
+        <input id="p-consent" name="consent" type="checkbox" required>
+        <span style="font-family:var(--font-body);text-transform:none;letter-spacing:0;color:var(--soot);font-weight:400;font-size:0.95rem;">
+          I'm happy for Earth Village CIC to email me Bulls Head updates related to my pledge. Unsubscribe any time.
+        </span>
+      </label>
+
+      <div class="submit-bar">
+        <span class="state" id="state-label">Pledge: not chosen</span>
+        <button type="submit" id="submit-btn">Put me on the wall →</button>
+      </div>
+      <div class="msg" id="msg" role="status" aria-live="polite"></div>
+    </div>
+
+  </form>
+
+  <div class="thanks">
+    <h2>You're on the wall. 🔥</h2>
+    <p>We've got your name. The building knows. We'll be in touch with the next move for your lane.</p>
+    <p><strong>Now help it reach one more person.</strong></p>
+    <a class="nextcta" href="share.html">Share with a neighbour →</a>
+  </div>
+
+</div>
+
+<footer>
+  <div>© Earth Village CIC · Bulls Head Campaign · Mexborough</div>
+  <div class="tag">#RiseOfTheBull</div>
+</footer>
+
+<script>
+(function(){
+  var ENDPOINT = 'https://energetic-loris-267.convex.site/bulls-head-capture';
+  var root = document.getElementById('root');
+  var form = document.getElementById('pledge-form');
+  var tiers = document.querySelectorAll('.tier');
+  var stateLabel = document.getElementById('state-label');
+  var msg = document.getElementById('msg');
+  var btn = document.getElementById('submit-btn');
+  var chips = document.querySelectorAll('.chip');
+  var giveCustom = document.getElementById('give-custom');
+
+  tiers.forEach(function (tile) {
+    tile.addEventListener('click', function () {
+      var val = tile.getAttribute('data-tier-option');
+      tiers.forEach(function (t) { t.setAttribute('data-selected', 'false'); });
+      tile.setAttribute('data-selected', 'true');
+      root.setAttribute('data-tier', val);
+      var input = tile.querySelector('input[type="radio"]');
+      if (input) input.checked = true;
+      var nice = ({ show_up: 'Show up', graft: 'Graft', give: 'Give', own: 'Own a piece' })[val] || '';
+      stateLabel.textContent = 'Pledge: ' + nice;
+    });
+  });
+
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      chips.forEach(function (c) { c.setAttribute('data-selected', 'false'); });
+      chip.setAttribute('data-selected', 'true');
+      var amt = chip.getAttribute('data-amount');
+      if (amt === 'custom') {
+        giveCustom.classList.add('show');
+        giveCustom.focus();
+      } else {
+        giveCustom.classList.remove('show');
+        giveCustom.value = amt;
+      }
+    });
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    msg.textContent = '';
+    msg.classList.remove('err');
+
+    var tier = root.getAttribute('data-tier') || '';
+    if (!tier) {
+      msg.textContent = 'Pick a lane first — show up, graft, give, or own.';
+      msg.classList.add('err');
+      return;
+    }
+
+    var fd = new FormData(form);
+    var email = (fd.get('email') || '').toString().trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      msg.textContent = 'That email looks off — double check it?';
+      msg.classList.add('err');
+      return;
+    }
+    if (!fd.get('consent')) {
+      msg.textContent = 'Tick the consent so we can reach you.';
+      msg.classList.add('err');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    var payload = {
+      email: email,
+      firstName: (fd.get('firstName') || '').toString().trim() || undefined,
+      consent: true,
+      source: 'bulls-head-pledge',
+      pledgeTier: tier,
+      postcode: (fd.get('postcode') || '').toString().trim() || undefined,
+      skills: fd.getAll('skills'),
+      graftNotes: (fd.get('graftNotes') || '').toString().trim() || undefined,
+      giveAmount: (fd.get('giveCustom') || '').toString().trim() || undefined,
+      lockName: (fd.get('lockName') || '').toString().trim() || undefined,
+      ownInterest: (fd.get('ownInterest') || '').toString().trim() || undefined
+    };
+
+    fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      mode: 'cors'
+    }).then(function (r) { return r.json().catch(function () { return { ok: r.ok }; }); })
+      .then(function (res) {
+        if (!res || res.ok === false) throw new Error((res && res.error) || 'send failed');
+        root.setAttribute('data-state', 'done');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      })
+      .catch(function () {
+        msg.textContent = "Couldn't send — try once more, or email backthebull@gmail.com.";
+        msg.classList.add('err');
+        btn.disabled = false;
+        btn.textContent = 'Put me on the wall →';
+      });
+  });
+})();
+</script>
+
+</body>
+</html>
