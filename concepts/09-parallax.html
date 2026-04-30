@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>09 · Six Layers Deep — Bull Arcade</title>
+<link rel="stylesheet" href="./tokens.css">
+<style>
+  html, body { margin: 0; height: 100dvh; background: #0a0605; overflow: hidden; font-family: var(--mono); color: var(--limestone); -webkit-user-select: none; user-select: none; }
+  .stage { position: fixed; inset: 0; perspective: 1400px; }
+  .screen { position: absolute; inset: -8%; background: url('./first-look/09-six-layers-deep.png') center/cover no-repeat, #0a0605; transition: transform 0.08s ease-out; will-change: transform; }
+  .embers { position: fixed; inset: 0; pointer-events: none; z-index: 2; overflow: hidden; }
+  .ember { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: radial-gradient(circle, rgba(212,168,67,0.95), rgba(168,50,50,0.6) 50%, transparent 70%); box-shadow: 0 0 8px rgba(212,168,67,0.8); animation: rise linear infinite; }
+  @keyframes rise { 0% { transform: translate(0, 100vh) scale(0.3); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translate(var(--drift), -10vh) scale(1); opacity: 0; } }
+  .pulse { position: fixed; inset: 0; pointer-events: none; z-index: 3; background: radial-gradient(ellipse at 50% 60%, rgba(168,50,50,0.22), transparent 55%); mix-blend-mode: screen; animation: beat 3.2s ease-in-out infinite; }
+  @keyframes beat { 0%,100% { opacity: 0.65; } 50% { opacity: 1; } }
+  .vignette { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(ellipse at center, transparent 50%, rgba(10,6,5,0.7) 100%); z-index: 4; }
+  .layers-legend { position: fixed; left: 14px; top: 50%; transform: translateY(-50%); z-index: 10; font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; background: rgba(10,6,5,0.72); padding: 8px 10px; border: 1px solid rgba(212,168,67,0.4); border-radius: 3px; line-height: 1.9; }
+  .layers-legend b { color: var(--limestone); }
+  .hint { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 10px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; z-index: 10; background: rgba(10,6,5,0.82); padding: 6px 14px; border: 1px solid rgba(212,168,67,0.4); border-radius: 3px; }
+  .back { position: fixed; top: 12px; left: 14px; z-index: 10; color: var(--gold); text-decoration: none; font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; background: rgba(10,6,5,0.82); padding: 7px 12px; border: 1px solid rgba(212,168,67,0.4); border-radius: 3px; }
+  .back:hover { background: var(--red); color: var(--limestone); }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="screen" id="screen"></div>
+  <div class="pulse"></div>
+  <div class="embers" id="embers"></div>
+  <div class="vignette"></div>
+</div>
+<a class="back" href="./index.html">← Arcade</a>
+<div class="hint">Tilt · Move · Mexborough Breathes</div>
+<script>
+const screen = document.getElementById('screen');
+const embers = document.getElementById('embers');
+for (let i = 0; i < 26; i++) {
+  const e = document.createElement('div');
+  e.className = 'ember';
+  const dur = 4 + Math.random() * 7;
+  e.style.left = (Math.random() * 100) + 'vw';
+  e.style.animationDuration = dur + 's';
+  e.style.animationDelay = (-Math.random() * dur) + 's';
+  e.style.setProperty('--drift', ((Math.random() - 0.5) * 200) + 'px');
+  e.style.width = e.style.height = (3 + Math.random() * 4) + 'px';
+  embers.appendChild(e);
+}
+let tx = 0, ty = 0, cx = 0, cy = 0, rz = 0;
+function apply() {
+  cx += (tx - cx) * 0.08;
+  cy += (ty - cy) * 0.08;
+  screen.style.transform = `translate(${cx}px, ${cy}px) scale(1.08) rotateY(${cx * 0.1}deg) rotateX(${-cy * 0.1}deg)`;
+  requestAnimationFrame(apply);
+}
+addEventListener('pointermove', e => {
+  const nx = (e.clientX / innerWidth - 0.5) * 2;
+  const ny = (e.clientY / innerHeight - 0.5) * 2;
+  tx = -nx * 60; ty = -ny * 40;
+});
+addEventListener('deviceorientation', e => {
+  if (e.gamma == null) return;
+  tx = -(e.gamma / 45) * 60;
+  ty = -(e.beta / 90) * 40;
+}, true);
+apply();
+</script>
+</body>
+</html>

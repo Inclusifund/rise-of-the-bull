@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>10 · The Borough Blooms — Bull Arcade</title>
+<link rel="stylesheet" href="./tokens.css">
+<style>
+  html, body { margin: 0; height: 100dvh; background: #0a0605; overflow: hidden; font-family: var(--mono); color: var(--limestone); -webkit-user-select: none; user-select: none; }
+  .screen { position: fixed; inset: 0; background: url('./first-look/10-borough-blooms.png') center/contain no-repeat, #0a0605; }
+  .pulse { position: fixed; inset: 0; pointer-events: none; z-index: 3; background: radial-gradient(circle at 50% 52%, rgba(168,50,50,0.24), transparent 30%); animation: beat 2.4s ease-in-out infinite; mix-blend-mode: screen; }
+  @keyframes beat { 0%,100% { opacity: 0.7; } 50% { opacity: 1; } }
+  .hit-zone { position: fixed; inset: 0; z-index: 5; cursor: crosshair; touch-action: manipulation; }
+  .bloom { position: fixed; pointer-events: none; z-index: 6; transform: translate(-50%, -50%); width: 12px; height: 12px; background: var(--red); border-radius: 50%; box-shadow: 0 0 18px rgba(168,50,50,0.9), 0 0 38px rgba(212,168,67,0.5); animation: grow 1.2s ease-out forwards; }
+  @keyframes grow { 0% { transform: translate(-50%, -50%) scale(0.4); opacity: 0; } 20% { opacity: 1; } 100% { transform: translate(-50%, -50%) scale(2.4); opacity: 0; } }
+  .coin { position: fixed; pointer-events: none; z-index: 7; width: 22px; height: 22px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff3b0, var(--gold) 45%, #8a6a1e 100%); box-shadow: 0 0 12px rgba(212,168,67,0.8), inset 0 0 6px rgba(255,230,150,0.4); animation: dash var(--dur, 1.4s) cubic-bezier(0.2, 0.7, 0.4, 1) forwards; }
+  .coin::after { content: '£'; position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--display); font-weight: 700; color: rgba(74, 54, 20, 0.8); font-size: 13px; }
+  @keyframes dash { 0% { transform: translate(-50%, -50%) rotate(0deg) scale(0.5); opacity: 0; } 15% { opacity: 1; } 100% { transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, -300px))) rotate(var(--spin, 720deg)) scale(1); opacity: 0; } }
+  .ticker { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); z-index: 10; font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--gold); text-transform: uppercase; background: rgba(10,6,5,0.82); padding: 7px 16px; border: 1px solid rgba(212,168,67,0.4); border-radius: 3px; }
+  .ticker b { color: var(--limestone); }
+  .readout { position: fixed; top: 12px; right: 14px; z-index: 10; font-family: var(--display); font-weight: 700; color: var(--gold); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; background: rgba(10,6,5,0.82); padding: 6px 10px; border: 1px solid rgba(212,168,67,0.4); border-radius: 3px; text-align: right; line-height: 1.6; }
+  .readout b { color: var(--limestone); }
+  .readout .big { font-size: 20px; color: var(--red); }
+  .back { position: fixed; top: 12px; left: 14px; z-index: 10; color: var(--gold); text-decoration: none; font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; background: rgba(10,6,5,0.82); padding: 7px 12px; border: 1px solid rgba(212,168,67,0.4); border-radius: 3px; }
+  .back:hover { background: var(--red); color: var(--limestone); }
+</style>
+</head>
+<body>
+<div class="screen"></div>
+<div class="pulse"></div>
+<div class="hit-zone" id="hz"></div>
+<a class="back" href="./index.html">← Arcade</a>
+<div class="readout">
+  <span class="big" id="n">142</span> NEIGHBOURS<br>
+  £<b id="p">3,840</b> PLEDGED
+</div>
+<div class="ticker" id="ticker"><b>Maureen</b> · Swinton · £10 · just now</div>
+<script>
+const names = ['Maureen','Darren','Jote','Sheila','Kevin','Pauline','Gareth','Aisha','Tom','Linda','Billy','Nisha','Frank','Marie','Dale'];
+const wards = ['Swinton','Wath','Conisbrough','Mexborough','Denaby','Adwick'];
+const hz = document.getElementById('hz');
+let n = 142, p = 3840;
+function coinDash(x, y, count = 8) {
+  for (let i = 0; i < count; i++) {
+    const c = document.createElement('div');
+    c.className = 'coin';
+    c.style.left = x + 'px'; c.style.top = y + 'px';
+    const ang = (Math.PI * 2 * i / count) + (Math.random() - 0.5) * 0.4;
+    const dist = 160 + Math.random() * 220;
+    c.style.setProperty('--dx', Math.cos(ang) * dist + 'px');
+    c.style.setProperty('--dy', (Math.sin(ang) * dist - 40) + 'px');
+    c.style.setProperty('--spin', (360 + Math.random() * 720) + 'deg');
+    c.style.setProperty('--dur', (1.2 + Math.random() * 0.6) + 's');
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 1900);
+  }
+}
+function addPledge(x, y, pledgeAmt) {
+  const b = document.createElement('div');
+  b.className = 'bloom';
+  b.style.left = x + 'px'; b.style.top = y + 'px';
+  document.body.appendChild(b);
+  setTimeout(() => b.remove(), 1200);
+  coinDash(x, y, 8);
+  n++; const amt = pledgeAmt || (5 + Math.floor(Math.random() * 40)); p += amt;
+  document.getElementById('n').textContent = n;
+  document.getElementById('p').textContent = p.toLocaleString();
+  const name = names[Math.floor(Math.random() * names.length)];
+  const ward = wards[Math.floor(Math.random() * wards.length)];
+  document.getElementById('ticker').innerHTML = `<b>${name}</b> · ${ward} · £${amt} · just now`;
+}
+hz.addEventListener('pointerdown', e => addPledge(e.clientX, e.clientY));
+setInterval(() => {
+  const x = innerWidth * (0.28 + Math.random() * 0.44);
+  const y = innerHeight * (0.32 + Math.random() * 0.32);
+  addPledge(x, y);
+}, 3200);
+</script>
+</body>
+</html>

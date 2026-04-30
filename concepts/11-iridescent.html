@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>11 · Rainbow Hide — Bull Arcade</title>
+<link rel="stylesheet" href="./tokens.css">
+<style>
+  html, body { margin: 0; height: 100dvh; background: #0a0605; overflow: hidden; font-family: var(--mono); color: var(--limestone); -webkit-user-select: none; user-select: none; }
+  .stage { position: fixed; inset: 0; }
+  .screen { position: absolute; inset: 0; background: url('./first-look/11-rainbow-hide.png') center/contain no-repeat, #0a0605; transition: filter 0.12s ease-out; will-change: filter; }
+  .hit-zone { position: fixed; inset: 0; z-index: 5; cursor: crosshair; touch-action: none; }
+  .back { position: fixed; top: 12px; left: 14px; z-index: 10; color: var(--gold); text-decoration: none; font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; background: rgba(10,6,5,0.72); padding: 7px 12px; border: 1px solid rgba(212,168,67,0.4); border-radius: 3px; }
+  .back:hover { background: var(--red); color: var(--limestone); }
+  .hint { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 10px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; z-index: 4; background: rgba(10,6,5,0.82); padding: 6px 14px; border: 1px solid rgba(212,168,67,0.4); border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="screen" id="screen"></div>
+</div>
+<div class="hit-zone" id="hz"></div>
+<a class="back" href="./index.html">← Arcade</a>
+<div class="hint">Tilt · Drag · Every Angle Shifts</div>
+<script>
+const screen = document.getElementById('screen');
+function set(hue, sat) {
+  screen.style.filter = `hue-rotate(${hue}deg) saturate(${sat})`;
+}
+addEventListener('pointermove', e => {
+  const nx = (e.clientX / innerWidth - 0.5) * 2;
+  const ny = (e.clientY / innerHeight - 0.5) * 2;
+  set(nx * 28, 1 + ny * 0.35);
+});
+addEventListener('deviceorientation', e => {
+  if (e.gamma == null) return;
+  set((e.gamma / 45) * 28, 1 + (e.beta / 90) * 0.35);
+}, true);
+</script>
+</body>
+</html>

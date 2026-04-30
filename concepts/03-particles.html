@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>03 — Particle Bull</title>
+<link rel="stylesheet" href="./tokens.css">
+<style>
+  canvas#cv { position: fixed; inset: 0; z-index: 1; cursor: crosshair; }
+  .stage { z-index: 2; pointer-events: none; }
+  .stage > * { pointer-events: auto; }
+
+  .overlay {
+    position: absolute; left: 36px; bottom: 80px; z-index: 3; pointer-events: none;
+    max-width: 380px;
+  }
+  .overlay h1 {
+    font-family: var(--display); font-style: italic; font-weight: 400;
+    font-size: 64px; line-height: 0.95; margin: 10px 0 14px;
+    color: var(--gold-100);
+  }
+  .overlay p { font-size: 14px; color: var(--ink-dim); line-height: 1.55; max-width: 320px; }
+
+  .hud {
+    position: absolute; right: 36px; bottom: 80px; z-index: 3;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; color: var(--ink-mute);
+    text-align: right; line-height: 1.9;
+  }
+  .hud b { color: var(--gold-500); font-weight: 500; }
+</style>
+</head>
+<body>
+<canvas id="cv" width="1280" height="720" style="width: 1280px; height: 720px;"></canvas>
+
+<div class="stage">
+  <div class="topbar">
+    <span class="brand">The Bull's Head · Est. 1820s</span>
+    <span class="rule"></span>
+    <span>Concept 03 / 12 · 8,000 Particles</span>
+  </div>
+  <div></div>
+  <div class="botbar">
+    <span>Hover scatters · release re-forms</span>
+    <span class="rule"></span>
+    <span>Canvas2D · flow field</span>
+  </div>
+</div>
+
+<div class="overlay">
+  <div class="kicker">One for one</div>
+  <h1>Every pledge<br>is a particle.</h1>
+  <p>Eight thousand neighbours. Together they make a bull. Scatter one and the shape holds — scatter enough and it breaks.</p>
+</div>
+
+<div class="hud" id="hud">
+  PARTICLES · <b id="pc">8000</b><br>
+  HOME · <b id="ph">100%</b><br>
+  CURSOR · <b id="pcur">idle</b>
+</div>
+
+<script>
+const cv = document.getElementById('cv');
+const ctx = cv.getContext('2d');
+let W=0, H=0, dpr = Math.min(devicePixelRatio, 2);
+function resize(){ W=innerWidth; H=innerHeight; cv.width=W*dpr; cv.height=H*dpr; cv.style.width=W+'px'; cv.style.height=H+'px'; ctx.setTransform(dpr,0,0,dpr,0,0); build(); }
+addEventListener('resize', resize);
+
+// Sample bull silhouette by rasterising a path into an offscreen canvas
+const off = document.createElement('canvas');
+let octx = off.getContext('2d', { willReadFrequently: true });
+
+// Muscular 3/4 bull head — matches the burning-bull logo / sticker pack.
+// Head faces down-left, shoulder hump right, twin horns sweep up & out, bellowing mouth visible.
+function drawBull(c, s, ox, oy){
+  c.save();
+  c.translate(ox, oy); c.scale(s, s); c.fillStyle = '#fff';
+
+  // main cranium
+  c.beginPath();
+  c.ellipse(-40, 10, 150, 130, 0, 0, Math.PI*2);
+  // cheek / jaw (extends down-left toward muzzle)
+  c.ellipse(-120, 70, 110, 85, -0.1, 0, Math.PI*2);
+  // muzzle
+  c.ellipse(-200, 110, 80, 60, -0.05, 0, Math.PI*2);
+  // lower lip / chin
+  c.ellipse(-185, 160, 55, 28, 0, 0, Math.PI*2);
+  // shoulder hump (back-right, large mass)
+  c.ellipse(130, 50, 130, 120, 0.05, 0, Math.PI*2);
+  // neck continuation
+  c.ellipse(50, 110, 110, 80, 0, 0, Math.PI*2);
+  // ear nub (front-top)
+  c.ellipse(60, -70, 30, 40, 0.3, 0, Math.PI*2);
+  c.fill();
+
+  // FRONT HORN — curves up and out to the upper-left
+  c.beginPath();
+  c.moveTo(-160, -80);                             // horn base at top of head
+  c.quadraticCurveTo(-220, -150, -250, -220);      // outward curve
+  c.quadraticCurveTo(-230, -200, -200, -150);      // inner curve back
+  c.quadraticCurveTo(-180, -120, -150, -80);
+  c.closePath(); c.fill();
+
+  // BACK HORN — curves up and out to the upper-right
+  c.beginPath();
+  c.moveTo(40, -110);
+  c.quadraticCurveTo(110, -190, 160, -240);
+  c.quadraticCurveTo(130, -210, 100, -170);
+  c.quadraticCurveTo(70, -140, 40, -100);
+  c.closePath(); c.fill();
+
+  // BELLOWING MOUTH — cut out a dark hole from the muzzle
+  c.save();
+  c.globalCompositeOperation = 'destination-out';
+  c.beginPath();
+  c.ellipse(-215, 135, 32, 20, 0.1, 0, Math.PI*2);
+  c.fill();
+  c.restore();
+
+  c.restore();
+}
+
+const N = 8000;
+let pts = new Float32Array(N*4); // tx, ty, x, y
+let vel = new Float32Array(N*2);
+let homeCount = N;
+
+function sampleTargets(){
+  // Pick densely within silhouette
+  const targetScale = Math.min(W, H) * 0.0016; // scale shape to viewport
+  off.width = Math.floor(W); off.height = Math.floor(H);
+  octx = off.getContext('2d', { willReadFrequently: true });
+  octx.clearRect(0,0,off.width, off.height);
+  drawBull(octx, targetScale*260, W*0.5, H*0.55);
+  const img = octx.getImageData(0,0,off.width, off.height).data;
+  let placed = 0;
+  let tries = 0;
+  while(placed < N && tries < N*80){
+    const x = (Math.random()*off.width)|0;
+    const y = (Math.random()*off.height)|0;
+    if (img[(y*off.width + x)*4 + 3] > 128){
+      pts[placed*4] = x;
+      pts[placed*4+1] = y;
+      // start positions: random on screen
+      pts[placed*4+2] = Math.random()*W;
+      pts[placed*4+3] = Math.random()*H;
+      vel[placed*2] = 0; vel[placed*2+1] = 0;
+      placed++;
+    }
+    tries++;
+  }
+  // If underfilled (very small viewport), loop existing
+  for (let i = placed; i < N; i++){
+    const src = (i % Math.max(1,placed));
+    pts[i*4] = pts[src*4]; pts[i*4+1] = pts[src*4+1];
+    pts[i*4+2] = Math.random()*W; pts[i*4+3] = Math.random()*H;
+  }
+}
+
+function build(){
+  sampleTargets();
+}
+resize();
+
+// Mouse / touch
+let mx = -999, my = -999, down = false;
+addEventListener('pointermove', e => { mx = e.clientX; my = e.clientY; });
+addEventListener('pointerleave', () => { mx = -999; my = -999; });
+addEventListener('pointerdown', () => { down = true; });
+addEventListener('pointerup', () => { down = false; });
+
+const hudP = document.getElementById('ph');
+const hudC = document.getElementById('pcur');
+
+function loop(){
+  // trail fade
+  ctx.fillStyle = 'rgba(10, 9, 8, 0.22)';
+  ctx.fillRect(0, 0, W, H);
+
+  const scatterR = down ? 260 : 180;
+  const scatterR2 = scatterR*scatterR;
+  const spring = 0.012;
+  const drag = 0.84;
+  let home = 0;
+
+  for (let i = 0; i < N; i++){
+    const tx = pts[i*4], ty = pts[i*4+1];
+    let x = pts[i*4+2], y = pts[i*4+3];
+    let vx = vel[i*2], vy = vel[i*2+1];
+
+    // spring to target
+    vx += (tx - x) * spring;
+    vy += (ty - y) * spring;
+
+    // mouse repulsion
+    const dx = x - mx, dy = y - my;
+    const d2 = dx*dx + dy*dy;
+    if (d2 < scatterR2 && d2 > 1){
+      const d = Math.sqrt(d2);
+      const f = (1 - d/scatterR);
+      vx += (dx/d) * f * 9;
+      vy += (dy/d) * f * 9;
+    }
+
+    vx *= drag; vy *= drag;
+    x += vx; y += vy;
+
+    // count at-home
+    const dxh = tx - x, dyh = ty - y;
+    if (dxh*dxh + dyh*dyh < 9) home++;
+
+    pts[i*4+2] = x; pts[i*4+3] = y;
+    vel[i*2] = vx; vel[i*2+1] = vy;
+
+    // Colour: gold when near home, charcoal-gold dim when flying
+    const away = Math.min(1, Math.sqrt(dxh*dxh+dyh*dyh)/200);
+    const lum = 220 - away*120;
+    const r = lum, g = (lum*0.85)|0, b = (lum*0.4)|0;
+    ctx.fillStyle = `rgba(${r},${g},${b},${1 - away*0.5})`;
+    ctx.fillRect(x, y, 1.6, 1.6);
+  }
+
+  homeCount = home;
+  hudP.textContent = Math.round(100*home/N) + '%';
+  hudC.textContent = (mx < 0) ? 'idle' : (down ? 'scattering' : 'stirring');
+  requestAnimationFrame(loop);
+}
+loop();
+</script>
+
+
+</body></html>

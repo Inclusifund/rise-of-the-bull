@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>01 · Born in Smoke — Bull Arcade</title>
+<link rel="stylesheet" href="./tokens.css">
+<style>
+  html, body { margin: 0; height: 100dvh; background: #0a0605; overflow: hidden; font-family: var(--mono); color: var(--limestone); -webkit-user-select: none; user-select: none; }
+  .screen { position: fixed; inset: 0; background: url('./first-look/01-born-in-smoke.png') center/contain no-repeat, #0a0605; }
+  .smoke { position: fixed; inset: 0; background: radial-gradient(circle at 30% 50%, rgba(26,20,16,0.85), rgba(26,20,16,0.55) 30%, transparent 65%); z-index: 3; mix-blend-mode: multiply; transition: opacity 0.4s; pointer-events: none; }
+  .smoke.cleared { opacity: 0; }
+  .hit-zone { position: fixed; inset: 0; z-index: 5; cursor: crosshair; touch-action: none; }
+  .reveal { position: fixed; width: 220px; height: 220px; pointer-events: none; z-index: 4; transform: translate(-50%, -50%); background: radial-gradient(circle, rgba(212,168,67,0.3), transparent 70%); mix-blend-mode: screen; border-radius: 50%; animation: fade 0.8s ease-out forwards; }
+  @keyframes fade { from { opacity: 1; } to { opacity: 0; } }
+  .readout { position: fixed; top: 12px; right: 14px; z-index: 10; font-family: var(--display); font-weight: 700; color: var(--gold); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; background: rgba(10,6,5,0.72); padding: 6px 10px; border: 1px solid rgba(212,168,67,0.4); border-radius: 3px; }
+  .readout b { color: var(--limestone); }
+  .back { position: fixed; top: 12px; left: 14px; z-index: 10; color: var(--gold); text-decoration: none; font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; background: rgba(10,6,5,0.72); padding: 7px 12px; border: 1px solid rgba(212,168,67,0.4); border-radius: 3px; }
+  .back:hover { background: var(--red); color: var(--limestone); }
+</style>
+</head>
+<body>
+<div class="screen"></div>
+<div class="smoke" id="smoke"></div>
+<div class="hit-zone" id="hz"></div>
+<a class="back" href="./index.html">← Arcade</a>
+<div class="readout">ASH CLEARED <b id="pc">0</b>%</div>
+<script>
+const hz = document.getElementById('hz');
+const smoke = document.getElementById('smoke');
+let cleared = 0;
+function spark(x, y) {
+  const r = document.createElement('div');
+  r.className = 'reveal';
+  r.style.left = x + 'px';
+  r.style.top = y + 'px';
+  document.body.appendChild(r);
+  setTimeout(() => r.remove(), 800);
+  cleared = Math.min(100, cleared + 2);
+  document.getElementById('pc').textContent = cleared;
+  smoke.style.opacity = String(1 - cleared / 120);
+}
+hz.addEventListener('pointermove', e => { if (e.buttons || e.pointerType === 'touch') spark(e.clientX, e.clientY); });
+hz.addEventListener('pointerdown', e => spark(e.clientX, e.clientY));
+</script>
+</body>
+</html>

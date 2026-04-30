@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>04 · From the Ground — Bull Arcade</title>
+<link rel="stylesheet" href="./tokens.css">
+<style>
+  html, body { margin: 0; background: #0a0605; font-family: var(--mono); color: var(--limestone); -webkit-user-select: none; user-select: none; overflow-x: hidden !important; overflow-y: auto !important; }
+  body { height: 360vh; }
+  .screen { position: fixed; inset: 0; background: url('./first-look/04-from-the-ground.png') center top/contain no-repeat, #0a0605; will-change: background-position; }
+  .scrubber { position: fixed; right: 16px; top: 12%; bottom: 12%; width: 22px; z-index: 20; touch-action: none; cursor: ns-resize; }
+  .scrubber .track { position: absolute; inset: 0 8px; background: linear-gradient(180deg, rgba(212,168,67,0.25), rgba(168,50,50,0.25)); border: 1px solid rgba(212,168,67,0.5); border-radius: 2px; }
+  .scrubber .knob { position: absolute; left: -4px; width: 30px; height: 30px; background: var(--gold); border: 2px solid var(--soot); border-radius: 3px; transform: translateY(-50%); box-shadow: 0 0 12px rgba(212,168,67,0.6); }
+  .scrubber .knob::after { content: '▲'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); color: var(--soot); font-size: 14px; font-weight: 700; }
+  .readout { position: fixed; top: 12px; right: 14px; z-index: 30; font-family: var(--display); font-weight: 700; color: var(--gold); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; background: rgba(10,6,5,0.82); padding: 6px 10px; border: 1px solid rgba(212,168,67,0.4); border-radius: 3px; }
+  .readout b { color: var(--limestone); }
+  .back { position: fixed; top: 12px; left: 14px; z-index: 30; color: var(--gold); text-decoration: none; font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; background: rgba(10,6,5,0.82); padding: 7px 12px; border: 1px solid rgba(212,168,67,0.4); border-radius: 3px; }
+  .back:hover { background: var(--red); color: var(--limestone); }
+  .hint { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 10px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; z-index: 30; background: rgba(10,6,5,0.82); padding: 6px 14px; border: 1px solid rgba(212,168,67,0.4); border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="screen" id="screen"></div>
+<a class="back" href="./index.html">← Arcade</a>
+<div class="readout">DEPTH <b id="pct">0</b>%</div>
+<div class="scrubber" id="scr"><div class="track"></div><div class="knob" id="knob" style="top: 0%;"></div></div>
+<div class="hint">Scroll · Drag Handle · Dig to the Bull</div>
+<script>
+const screen = document.getElementById('screen');
+const knob = document.getElementById('knob');
+const scr = document.getElementById('scr');
+function apply(p) {
+  p = Math.max(0, Math.min(1, p));
+  screen.style.backgroundPosition = `center ${p * 100}%`;
+  knob.style.top = (p * 100) + '%';
+  document.getElementById('pct').textContent = Math.round(p * 100);
+}
+function fromScroll() {
+  const max = document.documentElement.scrollHeight - innerHeight;
+  apply(max > 0 ? scrollY / max : 0);
+}
+addEventListener('scroll', fromScroll, { passive: true });
+let dragging = false;
+function fromPointer(e) {
+  const r = scr.getBoundingClientRect();
+  const p = (e.clientY - r.top) / r.height;
+  const max = document.documentElement.scrollHeight - innerHeight;
+  scrollTo({ top: p * max, behavior: 'instant' });
+  apply(p);
+}
+scr.addEventListener('pointerdown', e => { dragging = true; scr.setPointerCapture(e.pointerId); fromPointer(e); });
+scr.addEventListener('pointermove', e => { if (dragging) fromPointer(e); });
+scr.addEventListener('pointerup', () => dragging = false);
+fromScroll();
+</script>
+</body>
+</html>

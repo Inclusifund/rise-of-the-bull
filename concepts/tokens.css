@@ -1,0 +1,72 @@
+/* Rise of the Bull — Mexborough S64 design tokens
+ * Aligned with apps/bulls-head-rising/campaign-identity.md
+ * Every colour has a physical referent on Mexborough High Street.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Source+Serif+4:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  /* Palette — locked */
+  --red:       #A83232;   /* Bull Red — weathered pub door, Yorkshire brick, fire memory */
+  --red-hover: #8C2929;
+  --red-deep:  #7A1F1F;
+  --gold:      #D4A843;   /* Levelling Gold — brass fittings, brass rivets */
+  --gold-hover:#B8923A;
+  --green:     #4A7C59;   /* Signal Green — Yorkshire Dales, Earth Village anchor */
+  --limestone: #F2EDE4;   /* Warm off-white — limestone, old plaster, petition paper */
+  --soot:      #2C2421;   /* Near-black — charcoal, coal, soot from the fire */
+  --soot-2:    #3A2F2B;   /* Slightly lifted soot for depth */
+
+  /* Aliases so the Claude Design ports that reference --gold-100 / --gold-500 / --ink still work */
+  --ink:       var(--soot);
+  --ink-dim:   rgba(44, 36, 33, 0.72);
+  --ink-mute:  rgba(44, 36, 33, 0.50);
+  --gold-100:  var(--limestone);
+  --gold-300:  #EBD9A8;
+  --gold-500:  var(--gold);
+  --gold-700:  #9A7A2E;
+
+  /* Charcoal ramp aliases — map Claude's 6-step charcoal scale to our soot-warm ramp */
+  --charcoal-000: #1A1410;  /* deepest — near-black with warm undertone */
+  --charcoal-100: #22190F;
+  --charcoal-200: #2C2421;  /* = soot */
+  --charcoal-300: #3A2F2B;
+  --charcoal-400: #4A3E37;
+  --charcoal-500: #5F5148;
+
+  /* Type */
+  --display: 'Oswald', system-ui, sans-serif;
+  --body:    'Source Serif 4', Georgia, serif;
+  --mono:    'IBM Plex Mono', ui-monospace, monospace;
+
+  /* Scale */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --shadow-card: 0 2px 8px rgba(44, 36, 33, 0.12);
+}
+
+/* Shared page chrome used by every concept */
+html, body {
+  margin: 0;
+  background: var(--soot);
+  color: var(--limestone);
+  font-family: var(--body);
+  overflow: hidden;
+}
+.stage {
+  position: fixed; inset: 0; pointer-events: none; z-index: 2;
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: 28px 36px;
+}
+.stage > * { pointer-events: auto; }
+.topbar, .botbar {
+  display: flex; align-items: center; gap: 16px;
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.topbar .brand, .botbar span { color: var(--gold); }
+.topbar .rule, .botbar .rule {
+  flex: 1; height: 1px; background: rgba(242, 237, 228, 0.15);
+}

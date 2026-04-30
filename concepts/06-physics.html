@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>06 · Punch the Bull — Bull Arcade</title>
+<link rel="stylesheet" href="./tokens.css">
+<style>
+  html, body { margin: 0; height: 100dvh; background: #0a0605; overflow: hidden; font-family: var(--mono); color: var(--limestone); -webkit-user-select: none; user-select: none; }
+  .screen { position: fixed; inset: 0; background: url('./first-look/06-punch-the-bull.png') center/contain no-repeat, #0a0605; }
+  .hit-zone { position: fixed; inset: 0; z-index: 5; cursor: crosshair; touch-action: manipulation; }
+  .fx { position: fixed; pointer-events: none; z-index: 6; left: 0; top: 0; transform: translate(-50%, -50%); font-family: var(--display); font-weight: 700; color: var(--gold); font-size: 44px; letter-spacing: 0.04em; text-shadow: 0 0 18px rgba(212,168,67,0.8), 0 0 40px rgba(168,50,50,0.6); animation: pop 0.6s ease-out forwards; }
+  @keyframes pop { 0% { transform: translate(-50%, -50%) scale(0.6); opacity: 0; } 20% { opacity: 1; } 100% { transform: translate(-50%, -80%) scale(1.4); opacity: 0; } }
+  .shake { animation: shake 0.22s ease-out; }
+  @keyframes shake { 0%,100% { transform: translate(0,0); } 25% { transform: translate(-6px, 3px); } 50% { transform: translate(5px, -4px); } 75% { transform: translate(-3px, 2px); } }
+  .readout { position: fixed; top: 12px; right: 14px; z-index: 10; font-family: var(--display); font-weight: 700; color: var(--gold); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; background: rgba(10,6,5,0.72); padding: 6px 10px; border: 1px solid rgba(212,168,67,0.4); border-radius: 3px; }
+  .readout b { color: var(--limestone); }
+  .back { position: fixed; top: 12px; left: 14px; z-index: 10; color: var(--gold); text-decoration: none; font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; background: rgba(10,6,5,0.72); padding: 7px 12px; border: 1px solid rgba(212,168,67,0.4); border-radius: 3px; }
+  .back:hover { background: var(--red); color: var(--limestone); }
+</style>
+</head>
+<body>
+<div class="screen" id="screen"></div>
+<div class="hit-zone" id="hz"></div>
+<a class="back" href="./index.html">← Arcade</a>
+<div class="readout">HITS <b id="hc">0</b> · FORCE <b id="fc">0</b>kN · BEST <b id="bc">0</b></div>
+<script>
+const hz = document.getElementById('hz');
+const screen = document.getElementById('screen');
+let hits = 0, best = 0, lastTap = 0;
+hz.addEventListener('pointerdown', e => {
+  hits++;
+  const now = performance.now();
+  const dt = now - lastTap; lastTap = now;
+  const rate = Math.min(200, dt < 1000 ? Math.round(60000 / Math.max(120, dt)) : 40);
+  const force = Math.round(40 + Math.random() * 60 + (rate > 100 ? 20 : 0));
+  best = Math.max(best, force);
+  document.getElementById('hc').textContent = hits;
+  document.getElementById('fc').textContent = force;
+  document.getElementById('bc').textContent = best;
+  const fx = document.createElement('div');
+  fx.className = 'fx';
+  fx.textContent = force + 'kN';
+  fx.style.left = e.clientX + 'px';
+  fx.style.top = e.clientY + 'px';
+  document.body.appendChild(fx);
+  setTimeout(() => fx.remove(), 600);
+  screen.classList.remove('shake');
+  void screen.offsetWidth;
+  screen.classList.add('shake');
+});
+</script>
+</body>
+</html>

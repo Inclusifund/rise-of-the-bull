@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>12 · Drop the Pledge — Bull Arcade</title>
+<link rel="stylesheet" href="./tokens.css">
+<style>
+  html, body { margin: 0; height: 100dvh; background: #0a0605; overflow: hidden; font-family: var(--mono); color: var(--limestone); -webkit-user-select: none; user-select: none; }
+  .screen { position: fixed; inset: 0; background: url('./first-look/12-mercury.png') center/contain no-repeat, #0a0605; }
+  .fill { position: fixed; left: 50%; transform: translateX(-50%); width: 6%; bottom: 12%; height: 0%; background: linear-gradient(180deg, rgba(212,168,67,0.85), rgba(168,50,50,0.85)); mix-blend-mode: screen; z-index: 3; pointer-events: none; filter: blur(4px); transition: height 0.12s ease-out; }
+  .hit-zone { position: fixed; inset: 0; z-index: 5; cursor: crosshair; touch-action: manipulation; }
+  .readout { position: fixed; top: 12px; right: 14px; z-index: 10; font-family: var(--display); font-weight: 700; color: var(--gold); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; background: rgba(10,6,5,0.82); padding: 8px 12px; border: 1px solid rgba(212,168,67,0.5); border-radius: 3px; text-align: right; line-height: 1.6; min-width: 150px; }
+  .readout b { color: var(--limestone); }
+  .readout .big { font-size: 28px; color: var(--red); display: inline-block; min-width: 55px; }
+  .readout .pct { font-size: 28px; color: var(--gold); display: inline-block; min-width: 55px; }
+  .back { position: fixed; top: 12px; left: 14px; z-index: 10; color: var(--gold); text-decoration: none; font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; background: rgba(10,6,5,0.82); padding: 7px 12px; border: 1px solid rgba(212,168,67,0.4); border-radius: 3px; }
+  .back:hover { background: var(--red); color: var(--limestone); }
+  .ripple { position: fixed; pointer-events: none; z-index: 6; border: 2px solid var(--gold); border-radius: 50%; transform: translate(-50%, -50%); animation: rip 0.7s ease-out forwards; }
+  @keyframes rip { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 200px; height: 200px; opacity: 0; } }
+  .flash { position: fixed; inset: 0; pointer-events: none; z-index: 4; background: radial-gradient(circle at center, rgba(212,168,67,0.55), transparent 60%); opacity: 0; transition: opacity 0.25s; }
+  .flash.on { opacity: 1; }
+  .hint { position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 10px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; z-index: 10; background: rgba(10,6,5,0.82); padding: 5px 12px; border: 1px solid rgba(212,168,67,0.4); border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="screen"></div>
+<div class="fill" id="fill"></div>
+<div class="flash" id="flash"></div>
+<div class="hit-zone" id="hz"></div>
+<a class="back" href="./index.html">← Arcade</a>
+<div class="readout">
+  <span class="big" id="rate">0.0</span> TAPS/SEC<br>
+  <span class="pct" id="pct">0</span>% TO HORNS
+</div>
+<div class="hint">Tap Fast · Race the Mercury</div>
+<script>
+const hz = document.getElementById('hz');
+const flash = document.getElementById('flash');
+const fill = document.getElementById('fill');
+let intervals = [], prevTap = 0, pct = 0, ignited = false;
+function tick() {
+  const now = performance.now();
+  intervals = intervals.filter(i => now - i.t < 1500);
+  const rate = intervals.length > 1 ? (1000 / (intervals.reduce((s, i, k) => k > 0 ? s + (i.t - intervals[k-1].t) : s, 0) / (intervals.length - 1))) : 0;
+  const displayRate = Math.min(20, rate);
+  document.getElementById('rate').textContent = displayRate.toFixed(1);
+  pct = Math.max(0, pct - 0.012);
+  if (pct >= 100 && !ignited) {
+    ignited = true; flash.classList.add('on');
+    setTimeout(() => { flash.classList.remove('on'); ignited = false; pct = 0; }, 1400);
+  }
+  document.getElementById('pct').textContent = Math.round(pct);
+  fill.style.height = Math.min(68, pct * 0.68) + '%';
+  requestAnimationFrame(tick);
+}
+hz.addEventListener('pointerdown', e => {
+  intervals.push({ t: performance.now() });
+  pct = Math.min(100, pct + 2.5);
+  const r = document.createElement('div');
+  r.className = 'ripple';
+  r.style.left = e.clientX + 'px';
+  r.style.top = e.clientY + 'px';
+  document.body.appendChild(r);
+  setTimeout(() => r.remove(), 700);
+});
+tick();
+</script>
+</body>
+</html>

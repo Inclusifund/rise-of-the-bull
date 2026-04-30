@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>08 · Forge the Word — Bull Arcade</title>
+<link rel="stylesheet" href="./tokens.css">
+<style>
+  html, body { margin: 0; height: 100dvh; background: #0a0605; overflow: hidden; font-family: var(--mono); color: var(--limestone); -webkit-user-select: none; user-select: none; }
+  .screen { position: fixed; inset: 0; background: url('./first-look/08-forge-the-word.png') center/contain no-repeat, #0a0605; transition: filter 0.15s, transform 0.15s; }
+  .screen.strike { animation: clang 0.3s ease-out; }
+  @keyframes clang { 0%,100% { transform: scale(1); filter: brightness(1); } 40% { transform: scale(1.015); filter: brightness(1.22) saturate(1.2); } }
+  .pads { position: fixed; left: 50%; top: 63%; transform: translateX(-50%); display: flex; gap: 2vw; z-index: 6; }
+  .pad { width: 8vw; height: 8vw; max-width: 80px; max-height: 80px; min-width: 56px; min-height: 56px; border-radius: 50%; border: 0; cursor: pointer; background: transparent; position: relative; touch-action: manipulation; }
+  .pad::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle, var(--c, rgba(212,168,67,0.9)), transparent 72%); opacity: 0; transition: opacity 0.12s; filter: blur(2px); }
+  .pad.buzz::before { opacity: 1; }
+  .screen-flash { position: fixed; inset: 0; pointer-events: none; z-index: 3; background: radial-gradient(circle at var(--fx, 50%) var(--fy, 50%), var(--fc, transparent), transparent 40%); mix-blend-mode: screen; opacity: 0; transition: opacity 0.18s; }
+  .screen-flash.on { opacity: 1; }
+  .readout { position: fixed; top: 12px; right: 14px; z-index: 10; font-family: var(--display); font-weight: 700; color: var(--gold); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; background: rgba(10,6,5,0.82); padding: 6px 10px; border: 1px solid rgba(212,168,67,0.4); border-radius: 3px; }
+  .readout b { color: var(--limestone); }
+  .spark { position: fixed; pointer-events: none; z-index: 7; font-family: var(--display); font-weight: 700; font-size: 42px; transform: translate(-50%, -50%); text-shadow: 0 0 24px currentColor; animation: up 0.6s ease-out forwards; }
+  @keyframes up { 0% { opacity: 0; transform: translate(-50%, -40%) scale(0.6); } 25% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, -130%) scale(1.5); } }
+  .back { position: fixed; top: 12px; left: 14px; z-index: 10; color: var(--gold); text-decoration: none; font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; background: rgba(10,6,5,0.82); padding: 7px 12px; border: 1px solid rgba(212,168,67,0.4); border-radius: 3px; }
+  .back:hover { background: var(--red); color: var(--limestone); }
+</style>
+</head>
+<body>
+<div class="screen" id="screen"></div>
+<div class="screen-flash" id="flash"></div>
+<a class="back" href="./index.html">← Arcade</a>
+<div class="readout">BEAT <b id="seq">R · · ·</b> · STREAK <b id="st">0</b></div>
+<div class="pads" id="pads">
+  <button class="pad" data-i="0" data-letter="R" style="--c: rgba(232,64,64,0.95)"></button>
+  <button class="pad" data-i="1" data-letter="I" style="--c: rgba(60,200,120,0.95)"></button>
+  <button class="pad" data-i="2" data-letter="S" style="--c: rgba(72,140,240,0.95)"></button>
+  <button class="pad" data-i="3" data-letter="E" style="--c: rgba(200,90,240,0.95)"></button>
+</div>
+<script>
+const screen = document.getElementById('screen');
+const flash = document.getElementById('flash');
+const seq = ['R','I','S','E'];
+const colours = ['#E84040', '#3CC878', '#488CF0', '#C85AF0', '#F0A040', '#F0E040'];
+let idx = 0, streak = 0, cycle = 0;
+document.querySelectorAll('.pad').forEach(p => {
+  p.addEventListener('pointerdown', e => {
+    const letter = p.dataset.letter;
+    const col = colours[cycle % colours.length]; cycle++;
+    p.classList.add('buzz');
+    setTimeout(() => p.classList.remove('buzz'), 220);
+    const rect = p.getBoundingClientRect();
+    flash.style.setProperty('--fx', (rect.left + rect.width / 2) + 'px');
+    flash.style.setProperty('--fy', (rect.top + rect.height / 2) + 'px');
+    flash.style.setProperty('--fc', col);
+    flash.classList.add('on');
+    setTimeout(() => flash.classList.remove('on'), 180);
+    const s = document.createElement('div');
+    s.className = 'spark'; s.textContent = letter;
+    s.style.left = (rect.left + rect.width / 2) + 'px';
+    s.style.top = (rect.top + rect.height / 2) + 'px';
+    s.style.color = col;
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 600);
+    if (letter === seq[idx]) { idx++; if (idx >= seq.length) { idx = 0; streak++; } }
+    else { idx = 0; }
+    document.getElementById('seq').textContent = seq.map((l, i) => i === idx ? l : '·').join(' ');
+    document.getElementById('st').textContent = streak;
+    screen.classList.remove('strike'); void screen.offsetWidth; screen.classList.add('strike');
+  });
+});
+</script>
+</body>
+</html>
